@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var querystring = require('querystring');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -57,7 +58,7 @@ router.post('/login', function(req, res) {
 	res.redirect('/projects')
 })
 router.get('/login', function(req, res) {
-	res.render('login.ejs');
+	res.render('login.jade');
 })
 router.get('/logout', function(req, res) {
 	req.logout();

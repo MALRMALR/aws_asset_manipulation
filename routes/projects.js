@@ -148,4 +148,62 @@ router.delete('/:project_id', function(request, response) {
 
   }
 
+function queryDatabase(params, response, action){
+
+	switch(action){
+
+		case 'scan':
+		docClient.scan(params, function(err, data){
+			if (err) console.log(err, err.stack);
+			else response.json(data);
+		})
+		break;
+
+		case 'get':
+		docClient.get(params, function(err, data){
+			if (err) console.log(err, err.stack);
+	    // else console.log(data);
+			else response.json(data); // see in browser
+		})
+		break;
+
+    case 'post':
+    docClient.post(params, function(err, data){
+      if (err) console.log(err, err.stack);
+      else response.json(data);
+    })
+    break;
+
+    case 'put':
+    docClient.put(params, function(err, data){
+      if (err) console.log(err, err.stack);
+      else response.json(data);
+    })
+    break;
+
+    // should we add some admin priveliges?
+    case 'delete':
+    docClient.delete(params, function(err, data){
+      if (err) console.log(err, err.stack);
+      else response.json(data);
+    })
+    break;
+
+		case 'videoGet':
+		docClient.get(params, function(err, data){
+			// node = videos.Item.videos[0].id
+			var i = 0;
+			if (err) console.log(err, err.stack);
+			else {
+				var obj = data.Item;
+				obj.forEach(function(item){
+					console.log(item.videos[i].id + item.videos[i].upload_uri);
+				})
+			}
+		})
+
+    // how can i refactor this ugliness?
+	}
+}
+
 module.exports = router;
