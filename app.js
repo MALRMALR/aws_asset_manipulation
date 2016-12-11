@@ -23,14 +23,14 @@ var users = require('./routes/users');
 var projects = require('./routes/projects');
 
 var app = express();
-var mysql = require('mysql');
-
-var connection = mysql.createConnection({
-  host     : 'gnnodeapisocketsdbinstance.chtzfafukduc.us-west-2.rds.amazonaws.com',
-  user     : 'gonativedbadmin',
-  password : 'GoNativeAWSDb',
-  port     : '3306'
-});
+// var mysql = require('mysql');
+//
+// var connection = mysql.createConnection({
+//   host     : 'gnnodeapisocketsdbinstance.chtzfafukduc.us-west-2.rds.amazonaws.com',
+//   user     : 'gonativedbadmin',
+//   password : 'GoNativeAWSDb',
+//   port     : '3306'
+// });
 
 
 // sockets
