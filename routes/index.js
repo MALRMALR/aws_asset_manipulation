@@ -95,11 +95,10 @@ router.put('/record', function(req, res) {
 })
 router.post('/login', function(req, res) {
 	passport.authenticate('local', {
-		successRedirect: '/laest/projects',
-		failureRedirect: '/latest/login'
+		successRedirect: '/projects',
+		failureRedirect: '/login'
 	})
-  res.send(keypair)
-	res.redirect('/projects')
+	// res.redirect('/projects')
 })
 router.get('/login', function(req, res) {
 	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
