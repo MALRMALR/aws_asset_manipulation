@@ -7,6 +7,7 @@ var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var db = require('./../db');
 
+
 // Configure the local strategy for use by Passport.
 //
 // The local strategy require a `verify` function which receives the credentials
@@ -94,9 +95,10 @@ router.put('/record', function(req, res) {
 })
 router.post('/login', function(req, res) {
 	passport.authenticate('local', {
-		successRedirect: '/latest/projects',
+		successRedirect: '/laest/projects',
 		failureRedirect: '/latest/login'
 	})
+  res.send(keypair)
 	res.redirect('/projects')
 })
 router.get('/login', function(req, res) {

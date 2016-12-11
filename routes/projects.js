@@ -80,6 +80,7 @@ router.get('/:project_id', function(request, response) {
 	//update project with given id
 router.put('/:project_id', function(request, response) {
 		var projId = request.params.project_id;
+		var paramsToUpdate = querystring(request);
 		var dbCallParams = {
 			TableName: myTable,
 			IndexName: 'project_id',
