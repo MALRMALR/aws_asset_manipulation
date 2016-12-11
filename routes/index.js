@@ -22,6 +22,7 @@ passport.use(new FacebookStrategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
+    console.log(accessToken);
     return cb(null, profile);
   }
 ));
