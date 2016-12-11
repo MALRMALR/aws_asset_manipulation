@@ -5,6 +5,7 @@ var querystring = require('querystring');
 var methodOverride = require('method-override');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
+var passportTokenStrategy = require('passport-facebook-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
 // var db = require('./../db');
 
@@ -12,6 +13,7 @@ passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
     clientSecret: process.env.FACEBOOK_APP_SECRET || 'ba49b34c7c2ec73e88382eeec9850c99',
     callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
+    // callbackURL: 'http://localhost:8081/login/facebook/return',
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
   },
@@ -23,12 +25,18 @@ passport.use(new FacebookStrategy({
     // allows for account linking and authentication with other identity
     // providers.
     var user = {
-      'email': profile.emails[0].value,
-      'name' : profile.name.givenName + ' ' + profile.name.familyName,
+      'email': profile,
+      'name' : profile.displayName,
       'id'   : profile.id,
       'token': accessToken
     }
-    return done(null, user);
+
+    // pass access token into user profile // db records
+    // will use access token every time makes request.
+
+
+    console.log(user);
+    return cb(null, user);
 
   }
 ));
