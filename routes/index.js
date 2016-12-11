@@ -100,7 +100,7 @@ router.post('/login', function(req, res) {
 	res.redirect('/projects')
 })
 router.get('/login', function(req, res) {
-	res.render('login.jade', {title: 'Please Log In'});
+	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
 })
 router.get('/logout', function(req, res) {
 	req.logout();
