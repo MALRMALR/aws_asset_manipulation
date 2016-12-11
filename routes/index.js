@@ -6,26 +6,27 @@ var methodOverride = require('method-override');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var Strategy = require('passport').Strategy;
 // var db = require('./../db');
 
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
-    profileFields: ['id', 'displayName', 'photos', 'email']
-    // enableProof: true
-  },
-  //success function
-  function(accessToken, refreshToken, profile, cb) {
-    // In this example, the user's Facebook profile is supplied as the user
-    // record.  In a production-quality application, the Facebook profile should
-    // be associated with a user record in the application's database, which
-    // allows for account linking and authentication with other identity
-    // providers.
-    console.log(accessToken);
-    return cb(null, profile);
-  }
-));
+// passport.use(new FacebookStrategy({
+//     clientID: process.env.FACEBOOK_APP_ID,
+//     clientSecret: process.env.FACEBOOK_APP_SECRET,
+//     callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
+//     profileFields: ['id', 'displayName', 'photos', 'email']
+//     // enableProof: true
+//   },
+//   //success function
+//   function(accessToken, refreshToken, profile, cb) {
+//     // In this example, the user's Facebook profile is supplied as the user
+//     // record.  In a production-quality application, the Facebook profile should
+//     // be associated with a user record in the application's database, which
+//     // allows for account linking and authentication with other identity
+//     // providers.
+//     console.log(accessToken);
+//     return cb(null, profile);
+//   }
+// ));
 
 // In order to restore authentication state across HTTP requests, Passport needs
 // to serialize users into and deserialize users out of the session.  The
@@ -49,15 +50,15 @@ passport.deserializeUser(function(id, cb) {
 // (`username` and `password`) submitted by the user.  The function must verify
 // that the password is correct and then invoke `cb` with a user object, which
 // will be set at `req.user` in route handlers after authentication.
-// passport.use(new Strategy(
-//   function(username, password, cb) {
-//     db.users.findByUsername(username, function(err, user) {
-//       if (err) { return cb(err); }
-//       if (!user) { return cb(null, false); }
-//       if (user.password != password) { return cb(null, false); }
-//       return cb(null, user);
-//     });
-//   }));
+passport.use(new Strategy(
+  function(username, password, cb) {
+    db.users.findByUsername(username, function(err, user) {
+      if (err) { return cb(err); }
+      if (!user) { return cb(null, false); }
+      if (user.password != password) { return cb(null, false); }
+      return cb(null, user);
+    });
+  }));
 
 
 // Configure Passport authenticated session persistence.
@@ -117,41 +118,41 @@ router.put('/record', function(req, res) {
 	*/
 	// res.json({ 'message': '/PUT/ => /record'});
 })
-// router.post('/login', function(req, res) {
-// 	passport.authenticate('local', {
-// 		failureRedirect: '/login'
-// 	})
-// 	res.redirect('/projects')
-// })
-// router.get('/login', function(req, res) {
-// 	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
-// })
-// router.get('/logout', function(req, res) {
-// 	req.logout();
-// 	res.redirect('/');
-// })
+router.post('/login', function(req, res) {
+	passport.authenticate('local', {
+		failureRedirect: '/login'
+	})
+	res.redirect('/projects')
+})
+router.get('/login', function(req, res) {
+	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
+})
+router.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+})
 
-router.get('/login',
-  function(req, res){
-    res.render('login');
-  });
-
-router.get('/login/facebook',
-  passport.authenticate('facebook'),
-  function(req, res){});
-
-router.get('/login/facebook/return',
-  passport.authenticate('facebook', { successRedirect: '/profile',
-    failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/profile');
-  });
-
-router.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    res.render('profile', { user: req.user });
-  });
+// router.get('/login',
+//   function(req, res){
+//     res.render('login');
+//   });
+//
+// router.get('/login/facebook',
+//   passport.authenticate('facebook'),
+//   function(req, res){});
+//
+// router.get('/login/facebook/return',
+//   passport.authenticate('facebook', { successRedirect: '/profile',
+//     failureRedirect: '/login' }),
+//   function(req, res) {
+//     res.redirect('/profile');
+//   });
+//
+// router.get('/profile',
+//   require('connect-ensure-login').ensureLoggedIn(),
+//   function(req, res){
+//     res.render('profile', { user: req.user });
+//   });
 
 
 module.exports = router;
