@@ -185,7 +185,7 @@
     },
     "connect-ensure-login": {
       "version": "0.1.1",
-      "from": "connect-ensure-login@latest",
+      "from": "https://registry.npmjs.org/connect-ensure-login/-/connect-ensure-login-0.1.1.tgz",
       "resolved": "https://registry.npmjs.org/connect-ensure-login/-/connect-ensure-login-0.1.1.tgz"
     },
     "constantinople": {
