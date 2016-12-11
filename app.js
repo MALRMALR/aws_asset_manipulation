@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var querystring = require('querystring');
-require('dotenv').config();
 var AWS = require('aws-sdk');
 AWS.config.update({
 	region: "us-west-2",
@@ -28,7 +27,6 @@ var users = require('./routes/users');
 var projects = require('./routes/projects');
 
 var app = express();
-
 
 // sockets
 var server = require('http').Server(app);
