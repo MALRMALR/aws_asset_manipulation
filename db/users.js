@@ -1,4 +1,4 @@
-var records = [
+var Users = [
     { id: 1, username: 'michael', password: 'password', email: 'michael@supermediafuture.com' }
   , { id: 2, username: 'jill', password: 'birthday', displayName: 'Jill@aol.com' }
 ];
