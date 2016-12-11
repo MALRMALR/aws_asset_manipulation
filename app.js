@@ -14,7 +14,8 @@ AWS.config.update({
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 AWS.config.apiVersions = {
-  dynamodb: '2012-08-10'
+  dynamodb: '2012-08-10',
+	rds: '2014-10-31'
 };
 
 var index = require('./routes/index');
@@ -22,6 +23,15 @@ var users = require('./routes/users');
 var projects = require('./routes/projects');
 
 var app = express();
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host     : 'gnnodeapisocketsdbinstance.chtzfafukduc.us-west-2.rds.amazonaws.com',
+  user     : 'gonativedbadmin',
+  password : 'GoNativeAWSDb',
+  port     : '3306'
+});
+
 
 // sockets
 var server = require('http').Server(app);

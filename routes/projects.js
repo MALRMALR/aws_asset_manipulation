@@ -19,7 +19,7 @@ AWS.config.update({
 
 router.post('/', function(req, res) {
 	//makes db record based on current videos in s3 bucket
-	// var dbRecord = require('./../lambda/makeDBRecord.js');
+	var dbRecord = require('./../lambda/makeDBRecord.js');
 	// need to make this an executable function
 	console.log("new db record");
 	// res.json({message: 'success'});
@@ -27,8 +27,34 @@ router.post('/', function(req, res) {
 })
 router.get('/', function(req, res) {
 		// res.json({message: 'GET to /PROJECTS'})
-		scanProjectsTable(res);
-		// console.log('scanning all projects');
+		var movieURIHolderArray = [];
+    var count = 0;
+    var params = {
+      TableName : myTable
+    };
+    docClient.scan(params, function(err, data){
+      if (err) {
+        console.error(err, err.stack);
+      } else {
+        var records = data.Items;
+				if (records){
+					res.json(records);
+				}
+
+  			// lloop through all records
+        records.forEach(function(proj){
+          // console.log(proj);
+          // var videoArray = proj.videos;
+          // console.log(proj.videos)
+  					videoArray.forEach(function(item){
+
+  					})// end videoArray foreach loop
+
+        } // end record foreach
+  		);
+      }
+    }) // end doc scan
+
 	})
 	////////////////////////////////////////////////////////////////////////
 	////----> HTTP ROUTE: /GET/ http://localhost:8080/projects/:project_id     //////////////
