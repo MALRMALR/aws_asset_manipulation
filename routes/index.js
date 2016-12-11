@@ -12,7 +12,7 @@ passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/"
-    // profileFields: ['id', 'displayName', 'photos', 'email'],
+    profileFields: ['id', 'displayName', 'photos', 'email'],
     // enableProof: true
   },
   //success function
@@ -23,6 +23,9 @@ passport.use(new FacebookStrategy({
     // allows for account linking and authentication with other identity
     // providers.
     return cb(null, profile);
+    console.log(profile.profile_id);
+    console.log(accessToken);
+    console.log(refreshToken);
   }
 ));
 
