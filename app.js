@@ -9,11 +9,6 @@ var AWS = require('aws-sdk');
 AWS.config.update({
 	region: "us-west-2",
 })
-// passport user authentication and authorization
-var methodOverride = require('method-override');
-var passport = require('passport');
-var Strategy = require('passport-local').Strategy;
-var db = require('./db');
 
 // AWS config
 var docClient = new AWS.DynamoDB.DocumentClient();
