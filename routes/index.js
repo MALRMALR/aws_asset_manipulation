@@ -4,29 +4,25 @@ var querystring = require('querystring');
 // passport user authentication and authorization
 var methodOverride = require('method-override');
 var passport = require('passport');
-var Strategy = require('passport-local').Strategy;
-var db = require('./../db');
+var passportFacebook = require('passport-facebook');
+var FacebookStrategy = require('passport-facebook').Strategy;
+// var db = require('./../db');
 
-
-// Configure the local strategy for use by Passport.
-//
-// The local strategy require a `verify` function which receives the credentials
-// (`username` and `password`) submitted by the user.  The function must verify
-// that the password is correct and then invoke `cb` with a user object, which
-// will be set at `req.user` in route handlers after authentication.
-passport.use(new Strategy(
-  function(username, password, cb) {
-    db.users.findByUsername(username, function(err, user) {
-      if (err) { return cb(err); }
-      if (!user) { return cb(null, false); }
-      if (user.password != password) { return cb(null, false); }
-      return cb(null, user);
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
+    clientSecret: process.env.FACEBOOK_APP_SECRET || 'ba49b34c7c2ec73e88382eeec9850c99',
+    // callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/auth/facebook/callback",
+    callbackURL: "http://localhost.com/auth/facebook/callback",
+    profileFields: ['id', 'displayName', 'photos', 'email'],
+    enableProof: true
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      return cb(err, user);
     });
-  }));
+  }
+));
 
-
-// Configure Passport authenticated session persistence.
-//
 // In order to restore authentication state across HTTP requests, Passport needs
 // to serialize users into and deserialize users out of the session.  The
 // typical implementation of this is as simple as supplying the user ID when
@@ -43,6 +39,25 @@ passport.deserializeUser(function(id, cb) {
   });
 });
 
+// Configure the local strategy for use by Passport.
+//
+// The local strategy require a `verify` function which receives the credentials
+// (`username` and `password`) submitted by the user.  The function must verify
+// that the password is correct and then invoke `cb` with a user object, which
+// will be set at `req.user` in route handlers after authentication.
+// passport.use(new Strategy(
+//   function(username, password, cb) {
+//     db.users.findByUsername(username, function(err, user) {
+//       if (err) { return cb(err); }
+//       if (!user) { return cb(null, false); }
+//       if (user.password != password) { return cb(null, false); }
+//       return cb(null, user);
+//     });
+//   }));
+
+
+// Configure Passport authenticated session persistence.
+//
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -83,6 +98,7 @@ router.put('/record', function(req, res) {
 	var coordinates = querystring.parse(req.url.split("?")[1])
 	res.json(coordinates);
   // res.send(users);- are in geofence...?
+  // tracks status of videos through pipeline
 	/*
 	1.  Client tells server to start new project recording session - latitude and longitude
 	2.  Server responds with existing && current users in geofence
@@ -93,19 +109,40 @@ router.put('/record', function(req, res) {
 	*/
 	// res.json({ 'message': '/PUT/ => /record'});
 })
-router.post('/login', function(req, res) {
-	passport.authenticate('local', {
-		successRedirect: '/projects',
-		failureRedirect: '/login'
-	})
-	// res.redirect('/projects')
-})
-router.get('/login', function(req, res) {
-	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
-})
+// router.post('/login', function(req, res) {
+// 	passport.authenticate('local', {
+// 		failureRedirect: '/login'
+// 	})
+// 	res.redirect('/projects')
+// })
+// router.get('/login', function(req, res) {
+// 	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
+// })
 router.get('/logout', function(req, res) {
 	req.logout();
 	res.redirect('/');
 })
+
+router.get('/login',
+  function(req, res){
+    res.render('login');
+  });
+
+router.get('/login/facebook',
+  passport.authenticate('facebook'));
+
+router.get('/login/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
+
+router.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    res.render('profile', { user: req.user });
+  });
+
+
 
 module.exports = router;
