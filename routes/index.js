@@ -78,6 +78,7 @@ router.post('/upload', function(req, res) {
 	});
 })
 router.get('/videos/:id', function(request, response) {
+    passport.authenticate('facebook', { failureRedirect: '/' }),
 		var video_id = request.params.id;
 		var apiCallParams = {
 			TableName: 'demoProjectsV3',
