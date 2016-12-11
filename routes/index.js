@@ -96,6 +96,10 @@ router.put('/record', function(req, res) {
 	// }
 	var coordinates = querystring.parse(req.url.split("?")[1])
 	res.json(coordinates);
+  /*
+  [1.] Go out and create a folder on S3 using coordinates from client
+  [2.]
+  */
   // res.send(users);- are in geofence...?
   // tracks status of videos through pipeline
 	/*
