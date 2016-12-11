@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Go Native Api</title>
+  </head>
+  <body>
+    <h1><% title %></h1>
+    <p>Welcome to <% title %></p>
+
+
+    <script type="text/javascript">
+    http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.js
+    </script>
+    <script type="text/javascript">
+      var socket = io('//localhost:8081');
+      socket.on('socketToMe', function (data) {
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>
