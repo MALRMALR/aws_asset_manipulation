@@ -12,8 +12,8 @@ passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
     clientSecret: process.env.FACEBOOK_APP_SECRET || 'ba49b34c7c2ec73e88382eeec9850c99',
     callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
-    profileFields: ['id', 'displayName', 'photos', 'email']
-    // enableProof: true
+    profileFields: ['id', 'displayName', 'photos', 'email'],
+    enableProof: true
   },
   //success function
   function(accessToken, refreshToken, profile, cb) {
@@ -139,7 +139,7 @@ router.get('/login/facebook',
   function(req, res){});
 
 router.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  passport.authenticate('facebook', { failureRedirect: '/' }),
   function(req, res) {
     res.redirect('/profile');
   });
