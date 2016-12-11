@@ -7,15 +7,14 @@ var express = require('express');
 var querystring = require('querystring');
 var bodyParser = require('body-parser');
 var AWS = require('aws-sdk');
-AWS.config.update({
-	region: "us-west-2",
-})
-
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 AWS.config.apiVersions = {
 	dynamodb: '2012-08-10'
 };
+AWS.config.update({
+	region: "us-west-2",
+})
 /// routes
 
 router.post('/', function(req, res) {
@@ -27,7 +26,7 @@ router.post('/', function(req, res) {
   res.end();
 })
 router.get('/', function(req, res) {
-		// response.json({message: /GET/ to /PROJECTS})
+		// res.json({message: 'GET to /PROJECTS'})
 		scanProjectsTable(res);
 		// console.log('scanning all projects');
 	})
@@ -109,9 +108,10 @@ router.delete('/:project_id', function(request, response) {
         console.error(err, err.stack);
       } else {
         var records = data.Items;
+				if (records){
+					res.send(JSON.stringify(records));
+				}
 
-        res.send(records);
-  			// console.log(records);
   			// lloop through all records
         records.forEach(function(proj){
           // console.log(proj);
