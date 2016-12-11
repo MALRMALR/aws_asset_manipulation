@@ -23,7 +23,6 @@ passport.use(new FacebookStrategy({
     // allows for account linking and authentication with other identity
     // providers.
     return cb(null, profile);
-    console.log(profile.profile_id);
     console.log(accessToken);
     console.log(refreshToken);
   }
