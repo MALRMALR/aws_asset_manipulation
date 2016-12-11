@@ -136,7 +136,7 @@ router.delete('/:project_id', function(request, response) {
       } else {
         var records = data.Items;
 				if (records){
-					res.send(JSON.stringify(records));
+					res.send(records);
 				}
 
   			// lloop through all records
