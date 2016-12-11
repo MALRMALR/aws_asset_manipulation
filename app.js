@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var querystring = require('querystring');
+require('dotenv').config();
 var AWS = require('aws-sdk');
 AWS.config.update({
 	region: "us-west-2",
@@ -28,15 +29,6 @@ var projects = require('./routes/projects');
 
 var app = express();
 
-// db
-var mysql = require('mysql');
-
-var connection = mysql.createConnection({
-  host     : process.env.RDS_DB_HOSTNAME,
-  user     : process.env.RDS_USERNAME,
-  password : process.env.RDS_PASSWORD,
-  port     : process.env.RDS_PORT
-});
 
 // sockets
 var server = require('http').Server(app);
