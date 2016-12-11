@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var querystring = require('querystring');
+var passport = require('passport');
+var passportFacebook = require('passport-facebook');
+var FacebookStrategy = require('passport-facebook').Strategy;
 var AWS = require('aws-sdk');
 AWS.config.update({
 	region: "us-west-2",
