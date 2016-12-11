@@ -12,7 +12,7 @@ passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
-    profileFields: ['id', 'displayName', 'photos', 'email'],
+    profileFields: ['id', 'displayName', 'photos', 'email']
     // enableProof: true
   },
   //success function
