@@ -11,14 +11,15 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
-    profileFields: ['id', 'displayName', 'photos', 'email'],
-    enableProof: true
+    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/"
+    // profileFields: ['id', 'displayName', 'photos', 'email'],
+    // enableProof: true
   },
-  function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-      return done(null, profile);
-    });
+  function(accessToken, refreshToken, profile, cb) {
+    // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    //   return cb(err, user);
+    // });
+    console.log(profile.id);
   }
 ));
 
