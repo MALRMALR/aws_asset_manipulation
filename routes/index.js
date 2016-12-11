@@ -4,10 +4,10 @@ var querystring = require('querystring');
 // passport user authentication and authorization
 var methodOverride = require('method-override');
 var passport = require('passport');
-var passportFacebook = require('passport-facebook');
-var FacebookStrategy = require('passport-facebook').Strategy;
-var Strategy = require('passport').Strategy;
-// var db = require('./../db');
+// var passportFacebook = require('passport-facebook');
+// var FacebookStrategy = require('passport-facebook').Strategy;
+var LocalStrategy = require('passport').Strategy;
+var db = require('./../db');
 
 // passport.use(new FacebookStrategy({
 //     clientID: process.env.FACEBOOK_APP_ID,
@@ -28,6 +28,24 @@ var Strategy = require('passport').Strategy;
 //   }
 // ));
 
+// Configure the local strategy for use by Passport.
+//
+// The local strategy require a `verify` function which receives the credentials
+// (`username` and `password`) submitted by the user.  The function must verify
+// that the password is correct and then invoke `cb` with a user object, which
+// will be set at `req.user` in route handlers after authentication.
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (!user.verifyPassword(password)) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+));
+
+
 // In order to restore authentication state across HTTP requests, Passport needs
 // to serialize users into and deserialize users out of the session.  The
 // typical implementation of this is as simple as supplying the user ID when
@@ -43,22 +61,6 @@ passport.deserializeUser(function(id, cb) {
     cb(null, user);
   });
 });
-
-// Configure the local strategy for use by Passport.
-//
-// The local strategy require a `verify` function which receives the credentials
-// (`username` and `password`) submitted by the user.  The function must verify
-// that the password is correct and then invoke `cb` with a user object, which
-// will be set at `req.user` in route handlers after authentication.
-passport.use(new Strategy(
-  function(username, password, cb) {
-    db.users.findByUsername(username, function(err, user) {
-      if (err) { return cb(err); }
-      if (!user) { return cb(null, false); }
-      if (user.password != password) { return cb(null, false); }
-      return cb(null, user);
-    });
-  }));
 
 
 // Configure Passport authenticated session persistence.
