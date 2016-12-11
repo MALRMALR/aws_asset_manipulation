@@ -1,5 +1,15 @@
-<% if (!user) { %>
-	<p>Welcome! Please <a href="/login">log in</a>.</p>
-<% } else { %>
-	<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>.</p>
-<% } %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Go Native API</title>
+  </head>
+  <body>
+    <h1>Go Native API</h1>
+    <% if (!user) { %>
+    	<p>Welcome! Please <a href="/login">log in</a>.</p>
+    <% } else { %>
+    	<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>.</p>
+    <% } %>
+  </body>
+</html>

@@ -11,7 +11,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/auth/facebook/callback",
+    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/auth/facebook/callback/",
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
   },
