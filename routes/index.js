@@ -127,13 +127,18 @@ router.get('/logout', function(req, res) {
 	res.redirect('/');
 })
 
+router.get('/profile', ensureAuthenticated, function(req, res){
+  res.render('profile', { user: req.user });
+});
+
 router.get('/login',
   function(req, res){
     res.render('login');
   });
 
 router.get('/login/facebook',
-  passport.authenticate('facebook'));
+  passport.authenticate('facebook'),
+  function(req, res){});
 
 router.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
@@ -141,11 +146,11 @@ router.get('/login/facebook/return',
     res.redirect('/profile');
   });
 
-router.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    res.render('profile', { user: req.user });
-  });
+// test authentication
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/');
+}
 
 
 
