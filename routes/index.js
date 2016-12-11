@@ -122,14 +122,10 @@ router.put('/record', function(req, res) {
 // router.get('/login', function(req, res) {
 // 	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
 // })
-router.get('/logout', function(req, res) {
-	req.logout();
-	res.redirect('/');
-})
-
-router.get('/account', function(req, res){
-  res.render('account', { user: req.user });
-});
+// router.get('/logout', function(req, res) {
+// 	req.logout();
+// 	res.redirect('/');
+// })
 
 router.get('/login',
   function(req, res){
@@ -146,6 +142,11 @@ router.get('/login/facebook/return',
     res.redirect('/profile');
   });
 
+router.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    res.render('proifile', { user: req.user });
+  });
 
 
 module.exports = router;
