@@ -15,12 +15,10 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
   },
-  function(accessToken, refreshToken, profile, cb) {
-    // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      // return cb(err, user);
-    // });
-    console.log(profile.id);
-
+  ffunction(accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+      return done(null, profile);
+    });
   }
 ));
 
