@@ -6,7 +6,7 @@ var methodOverride = require('method-override');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-var db = require('./../db');
+// var db = require('./../db');
 
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
@@ -22,6 +22,7 @@ passport.use(new FacebookStrategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
+    console.log(accessToken);
     return cb(null, profile);
   }
 ));
@@ -66,6 +67,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Go Native API' });
 });
 
+
 router.get('/upload', function(req, res) {
 	res.send({
 		'message': 'getting /upload'
@@ -77,6 +79,7 @@ router.post('/upload', function(req, res) {
 		'message': 'posting to /upload'
 	});
 })
+
 router.get('/videos/:id', function(request, response) {
 		var video_id = request.params.id;
 		var apiCallParams = {
@@ -141,7 +144,7 @@ router.get('/login/facebook',
   });
 
 router.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/' }),
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/account');
   });
