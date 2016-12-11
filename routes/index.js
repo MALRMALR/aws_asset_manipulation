@@ -149,7 +149,7 @@ router.get('/login/facebook/return',
 router.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   function(req, res){
-    res.render('proifile', { user: req.user });
+    res.render('profile', { user: req.user });
   });
 
 
