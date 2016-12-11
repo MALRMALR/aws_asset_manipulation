@@ -127,8 +127,8 @@ router.get('/logout', function(req, res) {
 	res.redirect('/');
 })
 
-router.get('/profile', ensureAuthenticated, function(req, res){
-  res.render('profile', { user: req.user });
+router.get('/account', function(req, res){
+  res.render('account', { user: req.user });
 });
 
 router.get('/login',
@@ -145,12 +145,6 @@ router.get('/login/facebook/return',
   function(req, res) {
     res.redirect('/profile');
   });
-
-// test authentication
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/');
-}
 
 
 
