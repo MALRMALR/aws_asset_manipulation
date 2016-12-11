@@ -15,7 +15,7 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
   },
-  ffunction(accessToken, refreshToken, profile, done) {
+  function(accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
       return done(null, profile);
     });
