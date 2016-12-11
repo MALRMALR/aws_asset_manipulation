@@ -53,8 +53,10 @@ var dbObjectParams = {
 // end db variables
 
 
-// call inbound s3 bucket
-var makeRecord = s3.createBucket({Bucket: 'gn-inbound'}, function() {
+function makeRecord(){
+
+
+s3.createBucket({Bucket: 'gn-inbound'}, function() {
 
 	var params = {
   	Bucket: 'gn-inbound'
@@ -113,7 +115,7 @@ var makeRecord = s3.createBucket({Bucket: 'gn-inbound'}, function() {
     // send PUT request to DynamoDb if videos is not null and there is more than one
     if (dbObjectParams.Item.videos !== null && dbObjectParams.Item.videos.length > 4) {
       makeDBRecord(dbObjectParams);
-      // console.log(dbObjectParams);
+      console.log(dbObjectParams);
     } else {
       console.log('not enough videos have finished uploading to make new project')
     }
@@ -130,7 +132,7 @@ var makeRecord = s3.createBucket({Bucket: 'gn-inbound'}, function() {
   });
 
 });
-
+}
 
 // utility functions
 function makeDBRecord(dbObjectParams){
@@ -162,4 +164,4 @@ function randomString(length) {
     return str;
 }
 
-module.exports = makeRecord;
+module.exports = makeRecord();

@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
   			// lloop through all records
         records.forEach(function(proj){
           // console.log(proj);
-          // var videoArray = proj.videos;
+          var videoArray = proj.videos;
           // console.log(proj.videos)
   					videoArray.forEach(function(item){
 
