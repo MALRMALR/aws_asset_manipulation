@@ -119,7 +119,26 @@ router.delete('/:project_id', function(request, response) {
           // console.log(proj.videos)
   					videoArray.forEach(function(item){
 
+  						// I need to be able to copy this and pass it around to other AWS services.
+  						// instantiate s3 object
 
+  						// 1. - ffmpeg - invoke executable bash script
+
+  						// 2. - ping abeds server and notify him that new files are available
+
+  						// copy images to new s3 location
+
+  						// 3. - return txt file -  or does Abed's ysstem return video?
+
+  						// RENDERING
+
+  						// 4. - new video file is outputted to final S3 bucket
+
+  						// 5. new s3 project dispatches video obj creation event - firesponse lambda code
+
+  						// 6. firesponse up chat server, and sends notification once rendering is complete.  // does this happen on client side?
+
+  						// 7.  user object associates with project and other users.  (future)
   					})// end videoArray foreach loop
 
         } // end record foreach

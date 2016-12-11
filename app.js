@@ -28,6 +28,15 @@ var projects = require('./routes/projects');
 
 var app = express();
 
+// db
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host     : process.env.RDS_DB_HOSTNAME,
+  user     : process.env.RDS_USERNAME,
+  password : process.env.RDS_PASSWORD,
+  port     : process.env.RDS_PORT
+});
 
 // sockets
 var server = require('http').Server(app);
