@@ -128,7 +128,10 @@ router.get('/login',
   });
 
 router.get('/login/facebook',
-  passport.authenticate('facebook'));
+  passport.authenticate('facebook'),
+  function(req, res) {
+  // res.redirect('/profile')
+  });
 
 router.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
