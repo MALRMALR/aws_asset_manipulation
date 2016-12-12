@@ -56,11 +56,11 @@ router.get('/', function(req, res) {
     }) // end doc scan
 
 	})
-	////////////////////////////////////////////////////////////////////////
-	////----> HTTP ROUTE: /GET/ http://localhost:8080/projects/:project_id     //////////////
-	////----> HTTP ROUTE: /PUT/ http://localhost:8080/projects/:project_id     //////////////
-	////----> HTTP ROUTE: /DELETE/ http://localhost:8080/projects/:project_id  //////////////
-	////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+////----> HTTP ROUTE: /GET/ http://localhost:8080/projects/:project_id     //// 
+////----> HTTP ROUTE: /PUT/ http://localhost:8080/projects/:project_id     ////
+////----> HTTP ROUTE: /DELETE/ http://localhost:8080/projects/:project_id  ////
+///////////////////////////////////////////////////////////////////////////////
 router.get('/:project_id', function(request, response) {
 		// grab id from url
 		var projId = request.params.project_id;
@@ -109,17 +109,17 @@ router.delete('/:project_id', function(request, response) {
 	////////////////////////////////////////////////////////////////////////
 	////----> HTTP ROUTE: /GET/ localhost:8080/projects/findByStatus ///
 	////////////////////////////////////////////////////////////////////////
-	// router.get('/projects/findByStatus', function(request, response) {
-	// 	response.send('{endpoint: find by status}');
-	//   // findProjectBy('status', 'status-code');
-	// })
+	router.get('/projects/findByStatus', function(request, response) {
+		response.send('{endpoint: find by status}');
+	  // findProjectBy('status', 'status-code');
+	})
 	////////////////////////////////////////////////////////////////////////
 	////----> HTTP ROUTE: /GET/ localhost:8080/projects/findByTags ////
 	////////////////////////////////////////////////////////////////////////
-	// router.get('/projects/findByTags', function(request, response) {
-	// 	response.send('{endpoint: find by tags}');
-	// 	// findProjectBy('tags')
-	// })
+	router.get('/projects/findByTags', function(request, response) {
+		response.send('{endpoint: find by tags}');
+		// findProjectBy('tags')
+	})
 	////////////////////////////////////////////////////////////////////////
 	///////////////////////////// ADDITIONAL ROUTES ios ////////////////////
 	////////////////////////////////////////////////////////////////////////
@@ -189,7 +189,6 @@ function queryDatabase(params, response, action){
 		case 'get':
 		docClient.get(params, function(err, data){
 			if (err) console.log(err, err.stack);
-	    // else console.log(data);
 			else response.json(data); // see in browser
 		})
 		break;
