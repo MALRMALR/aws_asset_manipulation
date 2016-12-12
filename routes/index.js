@@ -35,7 +35,7 @@ passport.use(new FacebookStrategy({
 
     var user = {
 			'username': profile.displayName,
-      'user_id'   : parseInt(profile.id),
+      'user_id': parseInt(profile.id),
       'token': accessToken
     }
 
@@ -178,7 +178,7 @@ router.get('/login/facebook',
 router.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res, next) {
-    res.redirect('/account');
+    res.redirect('/');
   });
 
 router.get('/account',
