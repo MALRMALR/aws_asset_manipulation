@@ -19,8 +19,8 @@ AWS.config.update({
 })
 
 passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
-    clientSecret: process.env.FACEBOOK_APP_SECRET || 'ba49b34c7c2ec73e88382eeec9850c99',
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
     // callbackURL: 'http://localhost:8081/login/facebook/return',
     profileFields: ['id', 'displayName', 'photos', 'email'],
@@ -33,22 +33,22 @@ passport.use(new FacebookStrategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-    var params = {
-			TableName: 'demoUsers',
-			Item: {
-				username: profile.displayName,
-				user_id: parseInt(profile.id),
-				accessToken: accessToken
-			}
-    }
-
-    docClient.put(params, function(err, data){
-      if (err){
-        console.err(err, err.stack);
-      } else {
-        console.log(data);
-      }
-    })
+    // var params = {
+		// 	TableName: 'demoUsers',
+		// 	Item: {
+		// 		username: profile.displayName,
+		// 		user_id: parseInt(profile.id),
+		// 		accessToken: accessToken
+		// 	}
+    // }
+		//
+    // docClient.put(params, function(err, data){
+    //   if (err){
+    //     console.err(err, err.stack);
+    //   } else {
+    //     console.log(data);
+    //   }
+    // })
     // pass access token into user profile // db records
     // will use access token every time makes request.
 
@@ -188,60 +188,4 @@ router.get('/account',
     res.render('profile', { user: req.user });
   });
 
-	function queryDatabase(params, response, action){
-
-		switch(action){
-
-			case 'scan':
-			docClient.scan(params, function(err, data){
-				if (err) console.log(err, err.stack);
-				else response.json(data);
-			})
-			break;
-
-			case 'get':
-			docClient.get(params, function(err, data){
-				if (err) console.log(err, err.stack);
-				else response.json(data); // see in browser
-			})
-			break;
-
-	    case 'post':
-	    docClient.post(params, function(err, data){
-	      if (err) console.log(err, err.stack);
-	      else response.json(data);
-	    })
-	    break;
-
-	    case 'put':
-	    docClient.put(params, function(err, data){
-	      if (err) console.log(err, err.stack);
-	      else response.json(data);
-	    })
-	    break;
-
-	    // should we add some admin priveliges?
-	    case 'delete':
-	    docClient.delete(params, function(err, data){
-	      if (err) console.log(err, err.stack);
-	      else response.json(data);
-	    })
-	    break;
-
-			case 'videoGet':
-			docClient.get(params, function(err, data){
-				// node = videos.Item.videos[0].id
-				var i = 0;
-				if (err) console.log(err, err.stack);
-				else {
-					var obj = data.Item;
-					obj.forEach(function(item){
-						console.log(item.videos[i].id + item.videos[i].upload_uri);
-					})
-				}
-			})
-
-	    // how can i refactor this ugliness?
-		}
-	}
 module.exports = router;
