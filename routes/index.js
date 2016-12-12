@@ -34,13 +34,12 @@ passport.use(new FacebookStrategy({
     // record.  passes return profile data into user object and makes put request to users TableName
 
     var user = {
-			'username': profile.displayName,
-			'first_name': profile.
+			'username': profile.displayName.toString().join("_"),
+			'photo': profile._json.picture,
       'user_id': parseInt(profile.id),
-      'token': accessToken,
-			'photo': profile.
+      'token': accessToken
     }
-
+		console.log(user);
     var params = {
       TableName: 'demoUsers',
       Item: user

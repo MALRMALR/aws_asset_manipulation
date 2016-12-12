@@ -46,6 +46,14 @@ var mysql = require('mysql');
 // sockets
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+// writes to console all io connection events
+io.on('connection', function(socket){
+	console.log('a user connected');
+	socket.on('disconnect', function(){
+		console.log('user disconnected');
+	})
+})
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
