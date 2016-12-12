@@ -8,7 +8,7 @@ var passportFacebook = require('passport-facebook');
 var passportTokenStrategy = require('passport-facebook-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var AWS = require('aws-sdk');
-var ddb = new AWS.DynamoDB.DocumentClient();
+var docClient = new AWS.DynamoDB.DocumentClient();
 // var db = require('./../db');
 AWS.config.apiVersions = {
 	dynamodb: '2012-08-10'
@@ -33,7 +33,7 @@ passport.use(new FacebookStrategy({
 
     var user = {
       'username' : profile.displayName.join("-"),
-			'full_name': profile.displayName
+			'full_name': profile.displayName,
       'user_id'   : parseInt(profile.id),
       'token': accessToken
     }
@@ -43,7 +43,7 @@ passport.use(new FacebookStrategy({
       Item: user
     }
 
-    ddb.put(params, function(err, data){
+    docClient.put(params, function(err, data){
       if (err){
         console.log(err);
       } else {
@@ -109,8 +109,6 @@ router.post('/upload', function(req, res) {
 	res.send({
 		'message': 'posting to /upload'
 	});
-
-	// uploads raw video and IMU data to S3 using associated geofence / lat & long
 })
 
 router.get('/videos/:id', function(request, response) {
