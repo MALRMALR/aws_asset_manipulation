@@ -21,8 +21,10 @@ AWS.config.update({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
     clientSecret: process.env.FACEBOOK_APP_SECRET || 'ba49b34c7c2ec73e88382eeec9850c99',
-    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return",
-    // callbackURL: 'http://localhost:8081/login/facebook/return',
+		// callbackURL: 'http://localhost:8081/login/facebook/return',
+		// clientID: process.env.FACEBOOK_APP_ID,
+		// clientSecret: process.env.FACEBOOK_APP_SECRET,
+		callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return",
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
   },
@@ -76,7 +78,7 @@ passport.deserializeUser(function(user_id, done) {
 // Configure the local strategy for use by Passport.
 //
 // The local strategy require a `verify` function which receives the credentials
-// (`username` and `password`) submitted by the user.  The function must verify
+// (`username` and `password`) s, nextubmitted by the user.  The function must verify
 // that the password is correct and then invoke `cb` with a user object, which
 // will be set at `req.user` in route handlers after authentication.
 // passport.use(new Strategy(
@@ -95,19 +97,19 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/upload', function(req, res) {
+router.get('/upload', function(req, res, next) {
 	res.send({
 		'message': 'getting /upload'
 	});
 	/*  */
 });
-router.post('/upload', function(req, res) {
+router.post('/upload', function(req, res, next) {
 	res.send({
 		'message': 'posting to /upload'
 	});
 })
 
-router.get('/videos/:id', function(request, response) {
+router.get('/videos/:id', function(req, res, next) {
 		var video_id = request.params.id;
 		var apiCallParams = {
 			TableName: 'demoProjectsV3',
@@ -119,7 +121,7 @@ router.get('/videos/:id', function(request, response) {
 		queryDatabase(apiCallParams, response, 'videoGet');
 	})
 	// routes for iOS client
-router.put('/record', function(req, res) {
+router.put('/record', function(req, res, next) {
 	// client tells server to start new recording session
 	// server notifies client of users in recording session
 	// server tells all clients that recording session is completed and being processed
@@ -147,41 +149,41 @@ router.put('/record', function(req, res) {
 }) // end record
 
 
-// router.post('/login', function(req, res) {
+// router.post('/login', function(req, res, next) {
 // 	passport.authenticate('local', {
 // 		failureRedirect: '/login'
 // 	})
 // 	res.redirect('/projects')
 // })
-// router.get('/login', function(req, res) {
+// router.get('/login', function(req, res, next) {
 // 	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
 // })
-// router.get('/logout', function(req, res) {
+// router.get('/logout', function(req, res, next) {
 // 	req.logout();
 // 	res.redirect('/');
 // })
 
 //passport facebook
 router.get('/login',
-  function(req, res){
+  function(req, res, next){
     res.render('login');
   });
 
 router.get('/login/facebook',
   passport.authenticate('facebook'),
-  function(req, res){
+  function(req, res, next){
     res.redirect('/');
   });
 
 router.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
+  function(req, res, next) {
+    res.redirect('/account');
   });
 
 router.get('/account',
   require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
+  function(req, res, next){
     res.render('profile', { user: req.user });
   });
 

@@ -26,7 +26,9 @@ var users = require('./routes/users');
 var projects = require('./routes/projects');
 
 var app = express();
-// var mysql = require('mysql');
+var mysql = require('mysql');
+
+// var pool = mysql;
 //
 // var connection = mysql.createConnection({
 //   host     : 'gnnodeapisocketsdbinstance.chtzfafukduc.us-west-2.rds.amazonaws.com',
@@ -34,7 +36,12 @@ var app = express();
 //   password : 'GoNativeAWSDb',
 //   port     : '3306'
 // });
-
+//
+//
+// connection.connect(function(err) {
+//   if (err) throw err
+//   console.log('You are now connected...')
+// })
 
 // sockets
 var server = require('http').Server(app);
