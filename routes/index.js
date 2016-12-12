@@ -33,7 +33,7 @@ passport.use(new FacebookStrategy({
     var user = {
 			'username': username.join("_"),
 			'first_name': username[0],
-			'last_name': username[1]
+			'last_name': username[1],
 			'photo': profile._json.picture,
       'user_id': parseInt(profile.id),
       'token': accessToken
