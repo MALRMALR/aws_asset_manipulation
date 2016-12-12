@@ -19,10 +19,10 @@ AWS.config.update({
 })
 
 passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
-    // callbackURL: 'http://localhost:8081/login/facebook/return',
+    clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
+    clientSecret: process.env.FACEBOOK_APP_SECRET || 'ba49b34c7c2ec73e88382eeec9850c99',
+    // callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
+    callbackURL: 'http://localhost:8081/login/facebook/return',
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
   },
@@ -33,28 +33,30 @@ passport.use(new FacebookStrategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-    // var params = {
-		// 	TableName: 'demoUsers',
-		// 	Item: {
-		// 		username: profile.displayName,
-		// 		user_id: parseInt(profile.id),
-		// 		accessToken: accessToken
-		// 	}
-    // }
-		//
-    // docClient.put(params, function(err, data){
-    //   if (err){
-    //     console.err(err, err.stack);
-    //   } else {
-    //     console.log(data);
-    //   }
-    // })
+    var user = {
+      'username' : profile.displayName,
+      'user_id'   : parseInt(profile.id),
+      'token': accessToken
+    }
+
+    var params = {
+      TableName: 'demoUsers',
+      Item: user
+    }
+
+    docClient.put(params, function(err, data){
+      if (err){
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    })
     // pass access token into user profile // db records
     // will use access token every time makes request.
 
 
     // console.log(user);
-    // return cb(null, user);
+    return cb(null, user);
 
   }
 ));
@@ -187,5 +189,6 @@ router.get('/account',
   function(req, res){
     res.render('profile', { user: req.user });
   });
+
 
 module.exports = router;
