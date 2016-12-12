@@ -32,8 +32,7 @@ passport.use(new FacebookStrategy({
     // record.  passes return profile data into user object and makes put request to users TableName
 
     var user = {
-      'username' : profile.displayName.join("-"),
-			'full_name': profile.displayName,
+			'username': profile.displayName,
       'user_id'   : parseInt(profile.id),
       'token': accessToken
     }
