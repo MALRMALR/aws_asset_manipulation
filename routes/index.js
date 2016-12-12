@@ -185,7 +185,7 @@ router.get('/login/facebook/return',
   });
 
 router.get('/account',
-  require('connect-ensure-login').ensureLoggedIn(),
+  require('connect-ensure-login').ensureLoggedIn('/login'),
   function(req, res, next){
     res.render('profile', { user: req.user });
   });
