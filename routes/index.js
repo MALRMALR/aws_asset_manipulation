@@ -44,7 +44,7 @@ passport.use(new FacebookStrategy({
 
     docClient.put(params, function(err, data){
       if (err){
-        console.log(err);
+        console.err(err, err.stack);
       } else {
         console.log(data);
       }
