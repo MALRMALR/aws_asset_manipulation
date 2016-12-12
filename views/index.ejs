@@ -11,7 +11,7 @@
 
     <script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.js"></script>
     <script type="text/javascript">
-      var socket = io('//localhost:8081');
+      var socket = io('//gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com:8081');
       socket.on('socketToMe', function (data) {
         console.log(data);
       });
