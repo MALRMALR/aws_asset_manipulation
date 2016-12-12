@@ -9,9 +9,7 @@
     <p>Welcome to the <%= title %></p>
 
 
-    <script type="text/javascript">
-    http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.js
-    </script>
+    <script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.js"></script>
     <script type="text/javascript">
       var socket = io('//localhost:8081');
       socket.on('socketToMe', function (data) {
