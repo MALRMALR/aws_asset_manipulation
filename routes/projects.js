@@ -32,7 +32,7 @@ router.get('/', function(req, res) {
     var params = {
       TableName : myTable
     };
-		
+
     docClient.scan(params, function(err, data){
       if (err) {
         console.error(err, err.stack);

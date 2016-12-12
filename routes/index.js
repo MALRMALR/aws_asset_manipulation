@@ -27,7 +27,7 @@ passport.use(new FacebookStrategy({
     enableProof: true
   },
   //success function
-  function(accessToken, refreshToken, profile, cb) {
+  function(accessToken, refreshToken, profile, done) {
     // In this example, the user's Facebook profile is supplied as the user
     // record.  passes return profile data into user object and makes put request to users TableName
 
@@ -41,7 +41,8 @@ passport.use(new FacebookStrategy({
       TableName: 'demoUsers',
       Item: user
     }
-
+		// will make a new user id if one does not exist with
+		// existing fb id and profile.displayName
     docClient.put(params, function(err, data){
       if (err){
         console.log(err);
@@ -52,7 +53,7 @@ passport.use(new FacebookStrategy({
     // pass access token into user profile // db records
     // will use access token every time makes request.
 
-    return cb(null, user);
+    return done(null, user);
 
   }
 ));
@@ -87,10 +88,6 @@ passport.deserializeUser(function(user_id, done) {
 //       return cb(null, user);
 //     });
 //   }));
-
-
-// Configure Passport authenticated session persistence.
-//
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -147,7 +144,9 @@ router.put('/record', function(req, res) {
 	6.  sockets
 	*/
 	// res.json({ 'message': '/PUT/ => /record'});
-})
+}) // end record
+
+
 // router.post('/login', function(req, res) {
 // 	passport.authenticate('local', {
 // 		failureRedirect: '/login'
@@ -177,7 +176,7 @@ router.get('/login/facebook',
 router.get('/login/facebook/return',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/projects');
+    res.redirect('/');
   });
 
 router.get('/account',
