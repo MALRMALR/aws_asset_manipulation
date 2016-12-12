@@ -21,8 +21,8 @@ AWS.config.update({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
     clientSecret: process.env.FACEBOOK_APP_SECRET || 'ba49b34c7c2ec73e88382eeec9850c99',
-    // callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return/",
-    callbackURL: 'http://localhost:8081/login/facebook/return',
+    callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return",
+    // callbackURL: 'http://localhost:8081/login/facebook/return',
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
   },
