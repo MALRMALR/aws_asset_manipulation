@@ -54,7 +54,7 @@ passport.use(new FacebookStrategy({
 
 
     // console.log(user);
-    // return cb(null, user);
+    return cb(null, user);
 
   }
 ));
