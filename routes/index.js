@@ -34,7 +34,7 @@ passport.use(new FacebookStrategy({
 			'username': username.join("_"),
 			'first_name': username[0],
 			'last_name': username[1],
-			'photo': profile._json.picture,
+			'photo': profile._json.picture.data.url,
       'user_id': parseInt(profile.id),
       'token': accessToken
     }
@@ -131,6 +131,8 @@ router.put('/record', function(req, res, next) {
 	// }
 	var coordinates = querystring.parse(req.url.split("?")[1])
 	res.json(coordinates);
+	// go out on s3 - save file path - can post /list/to/file/video.mp4
+	// even though 'folders' don't really exist on S3
   /*
   [1.] Go out and create a folder on S3 using coordinates from client
   [2.]
