@@ -29,12 +29,11 @@ passport.use(new FacebookStrategy({
   //success function
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
-    // record.  In a production-quality application, the Facebook profile should
-    // be associated with a user record in the application's database, which
-    // allows for account linking and authentication with other identity
-    // providers.
+    // record.  passes return profile data into user object and makes put request to users TableName
+
     var user = {
-      'username' : profile.displayName,
+      'username' : profile.displayName.join("-"),
+			'full_name': profile.displayName
       'user_id'   : parseInt(profile.id),
       'token': accessToken
     }
@@ -54,8 +53,6 @@ passport.use(new FacebookStrategy({
     // pass access token into user profile // db records
     // will use access token every time makes request.
 
-
-    // console.log(user);
     return cb(null, user);
 
   }
