@@ -29,9 +29,11 @@ passport.use(new FacebookStrategy({
   function(accessToken, refreshToken, profile, done) {
     // In this example, the user's Facebook profile is supplied as the user
     // record.  passes return profile data into user object and makes put request to users TableName
-
+		var username = profile.displayName.split(" ");
     var user = {
-			'username': profile.displayName.toString().join("_"),
+			'username': username.join("_"),
+			'first_name': username[0],
+			'last_name': username[1]
 			'photo': profile._json.picture,
       'user_id': parseInt(profile.id),
       'token': accessToken
@@ -91,7 +93,7 @@ passport.deserializeUser(function(user_id, done) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Go Native API' });
+  res.render('index', { title: 'Go Native API v0.0.1' });
 });
 
 
@@ -99,8 +101,8 @@ router.get('/upload', function(req, res, next) {
 	res.send({
 		'message': 'getting /upload'
 	});
-	/*  */
 });
+
 router.post('/upload', function(req, res, next) {
 	res.send({
 		'message': 'posting to /upload'
@@ -161,7 +163,8 @@ router.put('/record', function(req, res, next) {
 // 	res.redirect('/');
 // })
 
-//passport facebook
+//passport facebook routes
+// PLEASE be mindful of callback baseURLS (line 24) if you are deploying (e.g. localhost -> EBS);
 router.get('/login',
   function(req, res, next){
     res.render('login');
