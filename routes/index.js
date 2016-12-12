@@ -7,7 +7,16 @@ var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var passportTokenStrategy = require('passport-facebook-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var AWS = require('aws-sdk');
+var docClient = new AWS.DynamoDB.DocumentClient();
 // var db = require('./../db');
+AWS.config.apiVersions = {
+	dynamodb: '2012-08-10'
+};
+
+AWS.config.update({
+	region: "us-west-2",
+})
 
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID || '1167644066656429',
@@ -24,19 +33,28 @@ passport.use(new FacebookStrategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-    var user = {
-      'email': profile,
-      'name' : profile.displayName,
-      'id'   : profile.id,
-      'token': accessToken
+    var params = {
+			TableName: 'demoUsers',
+			Item: {
+				username: profile.displayName,
+				user_id: parseInt(profile.id),
+				accessToken: accessToken
+			}
     }
 
+    docClient.put(params, function(err, data){
+      if (err){
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    })
     // pass access token into user profile // db records
     // will use access token every time makes request.
 
 
-    console.log(user);
-    return cb(null, user);
+    // console.log(user);
+    // return cb(null, user);
 
   }
 ));
@@ -47,11 +65,11 @@ passport.use(new FacebookStrategy({
 // serializing, and querying the user record by ID from the database when
 // deserializing.
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user.user_id);
 });
 
-passport.deserializeUser(function(id, done) {
-  Users.findById(id, function (err, user) {
+passport.deserializeUser(function(user_id, done) {
+  Users.findById(user_id, function (err, user) {
     done(err, user);
   });
 });

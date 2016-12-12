@@ -32,6 +32,7 @@ router.get('/', function(req, res) {
     var params = {
       TableName : myTable
     };
+		
     docClient.scan(params, function(err, data){
       if (err) {
         console.error(err, err.stack);
@@ -57,7 +58,7 @@ router.get('/', function(req, res) {
 
 	})
 ///////////////////////////////////////////////////////////////////////////////
-////----> HTTP ROUTE: /GET/ http://localhost:8080/projects/:project_id     //// 
+////----> HTTP ROUTE: /GET/ http://localhost:8080/projects/:project_id     ////
 ////----> HTTP ROUTE: /PUT/ http://localhost:8080/projects/:project_id     ////
 ////----> HTTP ROUTE: /DELETE/ http://localhost:8080/projects/:project_id  ////
 ///////////////////////////////////////////////////////////////////////////////
