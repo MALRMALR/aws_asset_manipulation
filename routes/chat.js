@@ -10,18 +10,17 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var AWS = require('aws-sdk');
 var docClient = new AWS.DynamoDB.DocumentClient();
 // var db = require('./../db');
-AWS.config = {
-  apiVersions: {
-    dynamodb: '2012-08-10'
-  },
-  update: {
-    region: 'us-west-2'
-  }
-}
 
-router.get('/chatroom',
+AWS.config.apiVersion = {
+	dynamodb: '2012-08-10',
+	rds: '2014-10-31'
+};
+
+AWS.config.update({region: 'us-west-2'})
+router.get('/chat',
 	function(req, res, next) {
 		res.render('chat');
+    next();
 	})
 
 module.exports = router;

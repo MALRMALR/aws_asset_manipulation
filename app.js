@@ -8,26 +8,23 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-require('dotenv').config();
-// AWS config
-var AWS = require('aws-sdk');
-var docClient = new AWS.DynamoDB.DocumentClient();
-AWS.config = {
-  apiVersions: {
-    dynamodb: '2012-08-10',
-		rds: '2014-10-31'
-  },
-  update: {
-    region: 'us-west-2'
-  }
-}
+// require('dotenv').config();
 
 // routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
-var chat = require('./routes/chat');
+// var chat = require('./routes/chat');
 
+//AWS config
+var AWS = require('aws-sdk');
+var docClient = new AWS.DynamoDB.DocumentClient();
+AWS.config.apiVersion = {
+	dynamodb: '2012-08-10',
+	rds: '2014-10-31'
+};
+
+AWS.config.update({region: 'us-west-2'})
 // instantiate express and require mysql
 var app = express();
 var mysql = require('mysql');
@@ -48,8 +45,8 @@ var mysql = require('mysql');
 
 // web sockets
 var server = require('http').Server(app);
-// var io = require('socket.io')(server);
-var io = require('socket.io').listen(app.listen(8081));
+var io = require('socket.io')(server);
+// var io = require('socket.io').listen(app.listen(8080));
 // writes to console all io connection events
 // chatroom
 io.on('connection', function(socket){
@@ -58,13 +55,13 @@ io.on('connection', function(socket){
 		console.log('user disconnected');
 	})
 })
-
-io.sockets.on('connection', function (socket) {
-    socket.emit('message', { message: 'welcome to the chat' });
-    socket.on('send', function (data) {
-        io.sockets.emit('message', data);
-    });
-});
+//
+// io.sockets.on('connection', function (socket) {
+//     socket.emit('message', { message: 'welcome to the chat' });
+//     socket.on('send', function (data) {
+//         io.sockets.emit('message', data);
+//     });
+// });
 
 
 // view engine setup
@@ -90,6 +87,7 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/projects', projects);
+// app.use('/chat', chat)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
