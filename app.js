@@ -8,7 +8,7 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-require('dotenv').config();
+// require('dotenv').config();
 // AWS config
 var AWS = require('aws-sdk');
 var docClient = new AWS.DynamoDB.DocumentClient();
