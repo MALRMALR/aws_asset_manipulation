@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var querystring = require('querystring');
+var fs = require('fs');
 // passport user authentication and authorization
 var methodOverride = require('method-override');
 var passport = require('passport');
@@ -213,6 +214,7 @@ router.get('/account',
   });
 
 
+
 function beginRecordingSession(projectPath, req, res){
 	var projectUsers = [];
 	// 1.  look up all users, if they are isLoggedIn === true, return users
@@ -272,6 +274,7 @@ function createFolderOnS3(projectCoordinates, res){
 			console.log(err);
 		} else {
 			res.send(data);
+			WriteStream(data, ready.txt);
 			res.end();
 		}
 	})

@@ -30,4 +30,24 @@ router.get('/', function(req, res, next) {
   })
 });
 
+router.get('/:user_id', function(req, res, next) {
+  var userID = req.params.user_id;
+  var queryParams = {
+    TableName: 'demoUsers',
+    Item: {
+      user_id: userID
+    }
+  }
+
+  docClient.query(queryParams, function(err, data){
+    if (err){
+      console.log(err);
+    } else {
+      console.log(data);
+    }
+  })
+
+})
+
+
 module.exports = router;
