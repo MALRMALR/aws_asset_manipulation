@@ -112,6 +112,13 @@ router.get('/', function(req, res, next) {
 
 router.post('/upload', function(req, res, next) {
 
+	// {
+	// 	'Content-Type': 'MP4',
+	// 	'Content-Disposition': 'inline || attachment || attachment; filename="filename.jpg"',
+	// 	'Content-Length': req.body["Content-Length"],
+	// 	'Video-URL': req.body["Video-URL"]
+	// }
+	
 	var videoHeaders = {
 		'Content-Type': req.params["Content-Type"],
 		'Content-Disposition': req.params["Content-Disposition"],
@@ -128,13 +135,6 @@ router.post('/upload', function(req, res, next) {
 	s3.upload(params, function(err, data){
 		console.log(err, data);
 	});
-
-	// {
-	// 	'Content-Type': 'MP4',
-	// 	'Content-Disposition': 'inline || attachment || attachment; filename="filename.jpg"',
-	// 	'Content-Length': req.body["Content-Length"],
-	// 	'Video-URL': req.body["Video-URL"]
-	// }
 	res.json(payload);
 
 	// res.end();
@@ -217,11 +217,8 @@ function beginRecordingSession(projectPath, req, res){
 	var projectUsers = [];
 	// 1.  look up all users, if they are isLoggedIn === true, return users
 	var projectCoordinates = projectPath;
-	// -- create DB RECORD NEW PROEJCT
-	//name, proejct_id
 
-
-
+	// begin waterfall
 	Q.fcall(
 		// scan users table
 		docClient.scan({TableName: 'demoUsers'}, function(err, data){
@@ -241,20 +238,15 @@ function beginRecordingSession(projectPath, req, res){
 				})
 			}
 		}))
-		//update db record
+		// update db record
 		.then(updateProjectRecord(projectUsers, projectCoordinates))
+		// create corresponding "folder" path with proj.txt inside on S3
 		.then(createFolderOnS3(projectCoordinates, res))
 
-
-	// goes out and creates a proj.txt file inside of projectCoordinates
-
 }
-
+// if record already exists, update, if not, create new one.
 function updateProjectRecord(projectUsers, projectCoordinates){
 	// write array to project
-	// enterUsersIntoProject();
-	// this doens't work?  need some way to update projects DB record with users
-
 	var projParams = {
 		TableName: 'demoProjectsV3',
 		Item: {
@@ -273,7 +265,7 @@ function updateProjectRecord(projectUsers, projectCoordinates){
 	})
 
 }
-
+// goes out and creates "folder" w/ corresponding name on s3
 function createFolderOnS3(projectCoordinates, res){
 	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates+"/ready.txt"}, function(err, data){
 		if (err){
@@ -284,6 +276,8 @@ function createFolderOnS3(projectCoordinates, res){
 		}
 	})
 }
+
+// utility
 
 function randomString(length) {
     var chars = '123456789'.split('');
