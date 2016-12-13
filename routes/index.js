@@ -159,6 +159,13 @@ router.put('/record', function(req, res, next) {
 	// res.json({ 'message': '/PUT/ => /record'});
 }) // end record
 
+router.get('/chatroom',
+	function(req, res, next) {
+		res.render('chat');
+	})
+
+
+
 
 // router.post('/login', function(req, res, next) {
 // 	passport.authenticate('local', {

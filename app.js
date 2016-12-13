@@ -10,8 +10,8 @@ var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
 require('dotenv').config();
 // AWS config
-var docClient = new AWS.DynamoDB.DocumentClient();
 var AWS = require('aws-sdk');
+var docClient = new AWS.DynamoDB.DocumentClient();
 AWS.config = {
   apiVersions: {
     dynamodb: '2012-08-10',

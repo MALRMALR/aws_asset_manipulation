@@ -9,12 +9,15 @@ var bodyParser = require('body-parser');
 var AWS = require('aws-sdk');
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-AWS.config.apiVersions = {
-	dynamodb: '2012-08-10'
-};
-AWS.config.update({
-	region: "us-west-2",
-})
+AWS.config = {
+	apiVersions: {
+		dynamodb: '2012-08-10'
+	},
+	update: {
+		region: "us-west-2"
+	}
+}
+
 /// routes
 
 router.post('/', function(req, res) {
