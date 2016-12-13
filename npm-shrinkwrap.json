@@ -540,7 +540,7 @@
     },
     "node-uuid": {
       "version": "1.4.7",
-      "from": "node-uuid@latest",
+      "from": "https://registry.npmjs.org/node-uuid/-/node-uuid-1.4.7.tgz",
       "resolved": "https://registry.npmjs.org/node-uuid/-/node-uuid-1.4.7.tgz"
     },
     "oauth": {

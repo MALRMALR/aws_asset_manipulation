@@ -167,7 +167,7 @@ router.put('/record', function(req, res, next) {
 
  	var projectPath = coordinates.latitude + "_" + coordinates.longitude;
 
-	beginRecordingSession(projectPath);
+	beginRecordingSession(projectPath, req, res);
 
 
 
@@ -231,7 +231,7 @@ router.get('/account',
   });
 
 
-function beginRecordingSession(projectPath){
+function beginRecordingSession(projectPath, req, res){
 	var projectUsers = [];
 	// 1.  look up all users, if they are isLoggedIn === true, return users
 	var projectCoordinates = projectPath;
@@ -246,10 +246,11 @@ function beginRecordingSession(projectPath){
 
 			userPool.forEach(function(data){
 				console.log(data.username);
-				var username = data.username;
+				var person = data.username;
 				var id = data.user_id;
+				var user = { person: id };
 				if (data.isLoggedIn === true){
-					projectUsers.push({ username : id });
+					projectUsers.push(user);
 				}
 			})
 			console.log(projectUsers);
@@ -268,11 +269,13 @@ function beginRecordingSession(projectPath){
 		}
 	});
 
-	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates + '.txt'}, function(err, data){
+	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates+"/proj.txt"}, function(err, data){
 		if (err){
 			console.log(err);
 		} else {
-			console.log(data);
+			// console.log(data);
+			res.send(data);
+			res.end();
 		}
 	})
 
