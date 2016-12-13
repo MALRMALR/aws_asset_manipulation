@@ -44,14 +44,14 @@ passport.use(new FacebookStrategy({
 			'isLoggedIn': true
     }
 		// console.log(user);
-    var params = {
+    var userParams = {
       TableName: 'demoUsers',
       Item: user
     }
 
 		// will make a new user id if one does not exist with
 		// existing fb id and profile.displayName
-    docClient.put(params, function(err, data){
+    docClient.put(userParams, function(err, data){
       if (err){
         console.log(err);
       } else {
@@ -278,11 +278,10 @@ function createFolderOnS3(projectCoordinates, res){
 }
 
 // utility
-
 function isAuthenticated(){
 	// scan dynamo db
 	// if token client sends matches one in db - good to go
-	
+
 }
 function randomString(length) {
     var chars = '123456789'.split('');
