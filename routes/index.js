@@ -118,7 +118,7 @@ router.post('/upload', function(req, res, next) {
 	// 	'Content-Length': req.body["Content-Length"],
 	// 	'Video-URL': req.body["Video-URL"]
 	// }
-	
+
 	var videoHeaders = {
 		'Content-Type': req.params["Content-Type"],
 		'Content-Disposition': req.params["Content-Disposition"],
@@ -279,6 +279,11 @@ function createFolderOnS3(projectCoordinates, res){
 
 // utility
 
+function isAuthenticated(){
+	// scan dynamo db
+	// if token client sends matches one in db - good to go
+	
+}
 function randomString(length) {
     var chars = '123456789'.split('');
 

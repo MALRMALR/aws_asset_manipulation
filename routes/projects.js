@@ -29,11 +29,11 @@ router.get('/', function(req, res) {
 		// res.json({message: 'GET to /PROJECTS'})
 		var movieURIHolderArray = [];
     var count = 0;
-    var params = {
-      TableName : myTable
+    var projectParams = {
+      TableName : 'demoProjectsV3'
     };
 
-    docClient.scan(params, function(err, data){
+    docClient.scan(projectParams, function(err, data){
       if (err) {
         console.error(err, err.stack);
       } else {
