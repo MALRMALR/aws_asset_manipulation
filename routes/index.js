@@ -13,7 +13,7 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 AWS.config.apiVersion = {
 	dynamodb: '2012-08-10',
 	rds: '2014-10-31'
-}; 
+};
 
 AWS.config.update({region: 'us-west-2'})
 
@@ -194,7 +194,7 @@ router.get('/login/facebook/return',
   });
 
 router.get('/account',
-  require('connect-ensure-login').ensureLoggedIn('/login'),
+  // require('connect-ensure-login').ensureLoggedIn('/login'),
   function(req, res, next){
     res.render('profile', { user: req.user });
   });
