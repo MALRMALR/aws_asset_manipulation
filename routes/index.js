@@ -8,6 +8,7 @@ var passportFacebook = require('passport-facebook');
 var passportTokenStrategy = require('passport-facebook-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var AWS = require('aws-sdk');
+var uuid = require('node-uuid');
 // var db = require('./../db');
 AWS.config.apiVersion = {
 	dynamodb: '2012-08-10',
@@ -257,6 +258,7 @@ function beginRecordingSession(projectPath){
 			docClient.put({
 				TableName: 'demoProjectsV3',
 				Item: {
+					id: uuid.v1();
 					name: projectCoordinates,
 					userPool: projectUsers
 				}
@@ -264,7 +266,7 @@ function beginRecordingSession(projectPath){
 		}
 	});
 
-	s3.putObject({Bucket: 'gn-inbound', Key: projectInitiator}, function(err, data){
+	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates + '.txt'}, function(err, data){
 		if (err){
 			console.log(err);
 		} else {
