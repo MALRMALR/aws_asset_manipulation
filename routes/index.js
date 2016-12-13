@@ -259,12 +259,12 @@ function beginRecordingSession(projectPath){
 				TableName: 'demoProjectsV3',
 				Item: {
 					name: projectCoordinates,
-					project_id: uuid.v1();
+					project_id: uuid.v1(),
 					userPool: projectUsers
 				}
 			});
 
-			
+
 		}
 	});
 
