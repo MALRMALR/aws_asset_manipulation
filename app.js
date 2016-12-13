@@ -30,7 +30,6 @@ var projects = require('./routes/projects');
 // instantiate express and require mysql
 var app = express();
 var mysql = require('mysql');
-var port = normalizePort(process.env.PORT || '8081');
 // var pool = mysql;
 //
 // var connection = mysql.createConnection({
@@ -49,7 +48,7 @@ var port = normalizePort(process.env.PORT || '8081');
 // sockets
 var server = require('http').Server(app);
 // var io = require('socket.io')(server);
-var io = require('socket.io').listen(app.listen(port));
+var io = require('socket.io').listen(app.listen(8080));
 // writes to console all io connection events
 io.on('connection', function(socket){
 	console.log('a user connected');

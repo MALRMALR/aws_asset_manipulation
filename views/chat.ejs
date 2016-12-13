@@ -8,8 +8,8 @@
   <body>
     <div id="content" style="width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;"></div>
     <div class="controls">
-      <input type="text" name="field" value="" style="width: 350px" id="field">
-      <input type="button" name="send" value="send" id="send">
+      <input id="field" type="text" name="field" style="width: 350px" >
+      <input id="send" type="submit" name="send">
     </div>
     <script type="text/javascript">
     window.onload = function() {
@@ -28,7 +28,7 @@
                     html += messages[i] + '<br />';
                 }
                 content.innerHTML = html;
-                content.scrollTop = content.scrollHeight;
+                // content.scrollTop = content.scrollHeight;
             } else {
                 console.log("There is a problem:", data);
             }
