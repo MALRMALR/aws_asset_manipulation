@@ -9,23 +9,25 @@ var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
 require('dotenv').config();
-var AWS = require('aws-sdk');
-AWS.config.update({
-	region: "us-west-2",
-})
-
 // AWS config
 var docClient = new AWS.DynamoDB.DocumentClient();
+var AWS = require('aws-sdk');
+AWS.config = {
+  apiVersions: {
+    dynamodb: '2012-08-10',
+		rds: '2014-10-31'
+  },
+  update: {
+    region: 'us-west-2'
+  }
+}
 
-AWS.config.apiVersions = {
-  dynamodb: '2012-08-10',
-	rds: '2014-10-31'
-};
-
+// routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
 
+// instantiate express and require mysql
 var app = express();
 var mysql = require('mysql');
 
@@ -78,8 +80,6 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/projects', projects);
-
-// user authentication
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -10,19 +10,19 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var AWS = require('aws-sdk');
 var docClient = new AWS.DynamoDB.DocumentClient();
 // var db = require('./../db');
-AWS.config.apiVersions = {
-	dynamodb: '2012-08-10'
-};
-
-AWS.config.update({
-	region: "us-west-2",
-})
+AWS.config = {
+  apiVersions: {
+    dynamodb: '2012-08-10'
+  },
+  update: {
+    region: 'us-west-2'
+  }
+}
 
 passport.use(new FacebookStrategy({
 		clientID: process.env.FACEBOOK_APP_ID,
 		clientSecret: process.env.FACEBOOK_APP_SECRET,
 		callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return",
-
 		profileFields: ['id', 'displayName', 'photos', 'email'],
 		enableProof: true
   },
