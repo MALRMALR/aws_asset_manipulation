@@ -258,11 +258,13 @@ function beginRecordingSession(projectPath){
 			docClient.put({
 				TableName: 'demoProjectsV3',
 				Item: {
-					id: uuid.v1();
 					name: projectCoordinates,
+					project_id: uuid.v1();
 					userPool: projectUsers
 				}
-			})
+			});
+
+			
 		}
 	});
 
