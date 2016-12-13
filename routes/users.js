@@ -11,13 +11,22 @@ AWS.config.apiVersion = {
 
 AWS.config.update({region: 'us-west-2'})
 
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.io.emit("socketToMe", "users");
   // res.send('respond with a resource.');
-  docClient.get(params, function(err, data){
-    if (err) console.log(err, err.stack);
-    else response.json(data); // see in browser
+  var params = {
+    TableName: 'demoUsers'
+  }
+  docClient.scan(params, function(err, data){
+    if (err){
+      console.log(err);
+    } else {
+      // console.log(data);
+      res.send(data);
+      res.end();
+    }
   })
 });
 

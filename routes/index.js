@@ -8,14 +8,17 @@ var passportFacebook = require('passport-facebook');
 var passportTokenStrategy = require('passport-facebook-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var AWS = require('aws-sdk');
-var docClient = new AWS.DynamoDB.DocumentClient();
 // var db = require('./../db');
 AWS.config.apiVersion = {
 	dynamodb: '2012-08-10',
 	rds: '2014-10-31'
 };
 
-AWS.config.update({region: 'us-west-2'})
+AWS.config.update({region: 'us-west-2'});
+
+
+var s3 = new AWS.S3();
+var docClient = new AWS.DynamoDB.DocumentClient();
 
 passport.use(new FacebookStrategy({
 		clientID: process.env.FACEBOOK_APP_ID,
@@ -35,13 +38,15 @@ passport.use(new FacebookStrategy({
 			'last_name': username[1],
 			'photo': profile._json.picture.data.url,
       'user_id': parseInt(profile.id),
-      'token': accessToken
+      'token': accessToken,
+			'isLoggedIn': true
     }
 		// console.log(user);
     var params = {
       TableName: 'demoUsers',
       Item: user
     }
+
 		// will make a new user id if one does not exist with
 		// existing fb id and profile.displayName
     docClient.put(params, function(err, data){
@@ -72,6 +77,14 @@ passport.deserializeUser(function(user_id, done) {
   Users.findById(user_id, function (err, user) {
     done(err, user);
   });
+
+	docClient.scan({TableName: demoUsers, Keys: {HashKey: 'user_id'}}, function(err, data){
+		if (err){
+			console.log(err);
+		} else {
+			console.log(data);
+		}
+	})
 });
 
 // Configure the local strategy for use by Passport.
@@ -95,21 +108,31 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Go Native API v0.0.1' });
 });
 
-
-router.get('/upload', function(req, res, next) {
-	res.send({
-		'message': 'getting /upload'
-	});
-});
-
 router.post('/upload', function(req, res, next) {
 
-	var payload = {
-		'Content-Type': req.body["Content-Type"],
-		'Content-Disposition': req.body["Content-Disposition"],
-		'Content-Length': req.body["Content-Length"],
-		'Video-URL': 's3-url-will-go-here.mov'
+	var videoHeaders = {
+		'Content-Type': req.params["Content-Type"],
+		'Content-Disposition': req.params["Content-Disposition"],
+		'Content-Length': req.params["Content-Length"],
+		'Video-URL': req.body["Video-URL"]
 	}
+
+	var params = {
+		Bucket: 'gn-inbound',
+		Key: 'incoming.mov',
+		Body: stream
+	}
+
+	s3.upload(params, function(err, data){
+		console.log(err, data);
+	});
+
+	// {
+	// 	'Content-Type': 'MP4',
+	// 	'Content-Disposition': 'inline || attachment || attachment; filename="filename.jpg"',
+	// 	'Content-Length': req.body["Content-Length"],
+	// 	'Video-URL': req.body["Video-URL"]
+	// }
 	res.json(payload);
 
 	// res.end();
@@ -138,7 +161,15 @@ router.put('/record', function(req, res, next) {
 	// 	longitude: 44.9922
 	// }
 	var coordinates = querystring.parse(req.url.split("?")[1])
-	res.json(coordinates);
+	// res.json(coordinates);
+	// NOW - take coordinates and save it for your file paths.
+
+ 	var projectPath = coordinates.latitude + "_" + coordinates.longitude;
+
+	beginRecordingSession(projectPath);
+
+
+
 	// go out on s3 - save file path - can post /list/to/file/video.mp4
 	// even though 'folders' don't really exist on S3
   /*
@@ -157,7 +188,6 @@ router.put('/record', function(req, res, next) {
 	*/
 	// res.json({ 'message': '/PUT/ => /record'});
 }) // end record
-
 
 
 // router.post('/login', function(req, res, next) {
@@ -199,15 +229,48 @@ router.get('/account',
     res.render('profile', { user: req.user });
   });
 
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
+function beginRecordingSession(projectPath){
+	var projectUsers = [];
+	// 1.  look up all users, if they are isLoggedIn === true, return users
+	var projectCoordinates = projectPath;
+	// -- create DB RECORD NEW PROEJCT
+	//name, proejct_id
+	docClient.scan({TableName: 'demoUsers'}, function(err, data){
+		if (err){
+			console.log(err);
+		} else {
+			var userPool = data.Items;
+			// loop through all users, see who is logged in and add them to project
 
-    // if they aren't redirect them to the home page
-    res.redirect('/');
+			userPool.forEach(function(data){
+				console.log(data.username);
+				var username = data.username;
+				var id = data.user_id;
+				if (data.isLoggedIn === true){
+					projectUsers.push({ username : id });
+				}
+			})
+			console.log(projectUsers);
+			// write array to project
+			// enterUsersIntoProject();
+			docClient.put({
+				TableName: 'demoProjectsV3',
+				Item: {
+					name: projectCoordinates,
+					userPool: projectUsers
+				}
+			})
+		}
+	});
+
+	s3.putObject({Bucket: 'gn-inbound', Key: projectInitiator}, function(err, data){
+		if (err){
+			console.log(err);
+		} else {
+			console.log(data);
+		}
+	})
+
 }
-
 module.exports = router;
