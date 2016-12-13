@@ -26,6 +26,7 @@ AWS.config = {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
+var chat = require('./routes/chat');
 
 // instantiate express and require mysql
 var app = express();
@@ -45,11 +46,12 @@ var mysql = require('mysql');
 //   console.log('You are now connected...')
 // })
 
-// sockets
+// web sockets
 var server = require('http').Server(app);
 // var io = require('socket.io')(server);
-var io = require('socket.io').listen(app.listen(8080));
+var io = require('socket.io').listen(app.listen(8081));
 // writes to console all io connection events
+// chatroom
 io.on('connection', function(socket){
 	console.log('a user connected');
 	socket.on('disconnect', function(){
