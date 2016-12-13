@@ -41,18 +41,6 @@ router.get('/', function(req, res) {
 				if (records){
 					res.json(records);
 				}
-
-  			// lloop through all records
-        records.forEach(function(proj){
-          // console.log(proj);
-          var videoArray = proj.videos;
-          // console.log(proj.videos)
-  					videoArray.forEach(function(item){
-
-  					})// end videoArray foreach loop
-
-        } // end record foreach
-  		);
       }
     }) // end doc scan
 
@@ -62,21 +50,26 @@ router.get('/', function(req, res) {
 ////----> HTTP ROUTE: /PUT/ http://localhost:8080/projects/:project_id     ////
 ////----> HTTP ROUTE: /DELETE/ http://localhost:8080/projects/:project_id  ////
 ///////////////////////////////////////////////////////////////////////////////
-router.get('/:project_id', function(request, response) {
+router.get('/:project_id', function(req, res) {
 		// grab id from url
-		var projId = request.params.project_id;
+		var projId = req.params.project_id;
 		// set up input project object
 		var dbCallParams = {
-				TableName: myTable,
+				TableName: 'demoProjectsV3',
 				IndexName: 'project_id',
 				Key: {
 					project_id: parseInt(projId),
 					name: 'demoProject' // all are named demo project
 				}
 			}
-			// console.log("DB CALL PARAMS: "+ JSON.stringify(dbCallParams));
-			// pass into execution helper function
-		queryDatabase(dbCallParams, response, 'get');
+
+			docClient.get(dbCallParams, function(err, data){
+				if (err) {
+					console.error(err, err.stack);
+				} else {
+					res.json(data);
+				}
+			}) // end doc scan
 	})
 	//update project with given id
 router.put('/:project_id', function(request, response) {
@@ -141,36 +134,36 @@ router.delete('/:project_id', function(request, response) {
 				}
 
   			// lloop through all records
-        records.forEach(function(proj){
-          // console.log(proj);
-          var videoArray = proj.videos;
-          // console.log(proj.videos)
-  					videoArray.forEach(function(item){
-
-  						// I need to be able to copy this and pass it around to other AWS services.
-  						// instantiate s3 object
-
-  						// 1. - ffmpeg - invoke executable bash script
-
-  						// 2. - ping abeds server and notify him that new files are available
-
-  						// copy images to new s3 location
-
-  						// 3. - return txt file -  or does Abed's ysstem return video?
-
-  						// RENDERING
-
-  						// 4. - new video file is outputted to final S3 bucket
-
-  						// 5. new s3 project dispatches video obj creation event - firesponse lambda code
-
-  						// 6. firesponse up chat server, and sends notification once rendering is complete.  // does this happen on client side?
-
-  						// 7.  user object associates with project and other users.  (future)
-  					})// end videoArray foreach loop
-
-        } // end record foreach
-  		);
+      //   records.forEach(function(proj){
+      //     // console.log(proj);
+      //     var videoArray = proj.videos;
+      //     // console.log(proj.videos)
+  		// 			videoArray.forEach(function(item){
+			//
+  		// 				// I need to be able to copy this and pass it around to other AWS services.
+  		// 				// instantiate s3 object
+			//
+  		// 				// 1. - ffmpeg - invoke executable bash script
+			//
+  		// 				// 2. - ping abeds server and notify him that new files are available
+			//
+  		// 				// copy images to new s3 location
+			//
+  		// 				// 3. - return txt file -  or does Abed's ysstem return video?
+			//
+  		// 				// RENDERING
+			//
+  		// 				// 4. - new video file is outputted to final S3 bucket
+			//
+  		// 				// 5. new s3 project dispatches video obj creation event - firesponse lambda code
+			//
+  		// 				// 6. firesponse up chat server, and sends notification once rendering is complete.  // does this happen on client side?
+			//
+  		// 				// 7.  user object associates with project and other users.  (future)
+  		// 			})// end videoArray foreach loop
+			//
+      //   } // end record foreach
+  		// );
       }
     }) // end doc scan
 
@@ -215,21 +208,7 @@ function queryDatabase(params, response, action){
       else response.json(data);
     })
     break;
-
-		case 'videoGet':
-		docClient.get(params, function(err, data){
-			// node = videos.Item.videos[0].id
-			var i = 0;
-			if (err) console.log(err, err.stack);
-			else {
-				var obj = data.Item;
-				obj.forEach(function(item){
-					console.log(item.videos[i].id + item.videos[i].upload_uri);
-				})
-			}
-		})
-
-    // how can i refactor this ugliness?
+    // refactor!
 	}
 }
 

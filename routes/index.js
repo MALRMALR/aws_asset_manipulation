@@ -219,7 +219,7 @@ function beginRecordingSession(projectPath, req, res){
 	var projectUsers = [];
 	// 1.  look up all users, if they are isLoggedIn === true, return users
 	var projectCoordinates = projectPath;
-
+	var i = projectUsers.length; // hard coding all logged in users belong to project
 	// begin waterfall
 	Q.fcall(
 		// scan users table
@@ -229,18 +229,27 @@ function beginRecordingSession(projectPath, req, res){
 			} else {
 				var userPool = data.Items;
 				// [1.] Read through users and pass any active users into projectUsers array
-				userPool.forEach(function(data){
-					console.log(data.username);
-					var person = data.username;
-					var id = data.user_id;
-					var user = { person: id };
-					if (data.isLoggedIn === true){
-						projectUsers.push(user);
-					}
-				})
+				if (userPool){
+					userPool.forEach(function(data){
+						// console.log(data.username);
+						var user = {
+							username: data.username,
+							user_id: data.user_id
+						};
+						if (data.isLoggedIn == true){
+							projectUsers.push(user);
+						}
+						i++;
+					})
+				}
 			}
 		}))
 		// update db record
+		/*
+		projectUsers keeps getting passed in as an empty array.
+
+		*/
+
 		.then(updateProjectRecord(projectUsers, projectCoordinates))
 		// create corresponding "folder" path with proj.txt inside on S3
 		.then(createFolderOnS3(projectCoordinates, res))
@@ -274,7 +283,6 @@ function createFolderOnS3(projectCoordinates, res){
 			console.log(err);
 		} else {
 			res.send(data);
-			WriteStream(data, ready.txt);
 			res.end();
 		}
 	})
