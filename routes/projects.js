@@ -71,7 +71,8 @@ router.get('/:project_id', function(req, res) {
 				}
 			}) // end doc scan
 	})
-	//update project with given id
+
+//update project with given id
 router.put('/:project_id', function(request, response) {
 		var projId = request.params.project_id;
 		var paramsToUpdate = querystring(request);
@@ -86,7 +87,8 @@ router.put('/:project_id', function(request, response) {
 		};
 		queryDatabase(dbCallParams, response, 'put');
 	})
-	// delete this project
+
+// delete this project
 router.delete('/:project_id', function(request, response) {
 		// url id
 		var projId = request.params.project_id;
@@ -100,74 +102,74 @@ router.delete('/:project_id', function(request, response) {
 		};
 		queryDatabase(dbCallParams, response, 'delete');
 	})
-	////////////////////////////////////////////////////////////////////////
-	////----> HTTP ROUTE: /GET/ localhost:8080/projects/findByStatus ///
-	////////////////////////////////////////////////////////////////////////
-	router.get('/projects/findByStatus', function(request, response) {
-		response.send('{endpoint: find by status}');
-	  // findProjectBy('status', 'status-code');
-	})
-	////////////////////////////////////////////////////////////////////////
-	////----> HTTP ROUTE: /GET/ localhost:8080/projects/findByTags ////
-	////////////////////////////////////////////////////////////////////////
-	router.get('/projects/findByTags', function(request, response) {
-		response.send('{endpoint: find by tags}');
-		// findProjectBy('tags')
-	})
-	////////////////////////////////////////////////////////////////////////
-	///////////////////////////// ADDITIONAL ROUTES ios ////////////////////
-	////////////////////////////////////////////////////////////////////////
-  function scanProjectsTable(res) {
-    // should this be global object if moving files after passing to app?
-    var movieURIHolderArray = [];
-    var count = 0;
-    var params = {
-      TableName : myTable
-    };
-    docClient.scan(params, function(err, data){
-      if (err) {
-        console.error(err, err.stack);
-      } else {
-        var records = data.Items;
-				if (records){
-					res.send(records);
-				}
+////////////////////////////////////////////////////////////////////////
+////----> HTTP ROUTE: /GET/ localhost:8080/projects/findByStatus ///
+////////////////////////////////////////////////////////////////////////
+router.get('/projects/findByStatus', function(request, response) {
+	response.send('{endpoint: find by status}');
+  // findProjectBy('status', 'status-code');
+})
+////////////////////////////////////////////////////////////////////////
+////----> HTTP ROUTE: /GET/ localhost:8080/projects/findByTags ////
+////////////////////////////////////////////////////////////////////////
+router.get('/projects/findByTags', function(request, response) {
+	response.send('{endpoint: find by tags}');
+	// findProjectBy('tags')
+})
+////////////////////////////////////////////////////////////////////////
+///////////////////////////// ADDITIONAL ROUTES ios ////////////////////
+////////////////////////////////////////////////////////////////////////
+function scanProjectsTable(res) {
+  // should this be global object if moving files after passing to app?
+  var movieURIHolderArray = [];
+  var count = 0;
+  var params = {
+    TableName : myTable
+  };
+  docClient.scan(params, function(err, data){
+    if (err) {
+      console.error(err, err.stack);
+    } else {
+      var records = data.Items;
+			if (records){
+				res.send(records);
+			}
 
-  			// lloop through all records
-      //   records.forEach(function(proj){
-      //     // console.log(proj);
-      //     var videoArray = proj.videos;
-      //     // console.log(proj.videos)
-  		// 			videoArray.forEach(function(item){
-			//
-  		// 				// I need to be able to copy this and pass it around to other AWS services.
-  		// 				// instantiate s3 object
-			//
-  		// 				// 1. - ffmpeg - invoke executable bash script
-			//
-  		// 				// 2. - ping abeds server and notify him that new files are available
-			//
-  		// 				// copy images to new s3 location
-			//
-  		// 				// 3. - return txt file -  or does Abed's ysstem return video?
-			//
-  		// 				// RENDERING
-			//
-  		// 				// 4. - new video file is outputted to final S3 bucket
-			//
-  		// 				// 5. new s3 project dispatches video obj creation event - firesponse lambda code
-			//
-  		// 				// 6. firesponse up chat server, and sends notification once rendering is complete.  // does this happen on client side?
-			//
-  		// 				// 7.  user object associates with project and other users.  (future)
-  		// 			})// end videoArray foreach loop
-			//
-      //   } // end record foreach
-  		// );
-      }
-    }) // end doc scan
+			// lloop through all records
+    //   records.forEach(function(proj){
+    //     // console.log(proj);
+    //     var videoArray = proj.videos;
+    //     // console.log(proj.videos)
+		// 			videoArray.forEach(function(item){
+		//
+		// 				// I need to be able to copy this and pass it around to other AWS services.
+		// 				// instantiate s3 object
+		//
+		// 				// 1. - ffmpeg - invoke executable bash script
+		//
+		// 				// 2. - ping abeds server and notify him that new files are available
+		//
+		// 				// copy images to new s3 location
+		//
+		// 				// 3. - return txt file -  or does Abed's ysstem return video?
+		//
+		// 				// RENDERING
+		//
+		// 				// 4. - new video file is outputted to final S3 bucket
+		//
+		// 				// 5. new s3 project dispatches video obj creation event - firesponse lambda code
+		//
+		// 				// 6. firesponse up chat server, and sends notification once rendering is complete.  // does this happen on client side?
+		//
+		// 				// 7.  user object associates with project and other users.  (future)
+		// 			})// end videoArray foreach loop
+		//
+    //   } // end record foreach
+		// );
+    }
+  }) // end doc scan
 
-  }
+}
 
 function queryDatabase(params, response, action){
 
