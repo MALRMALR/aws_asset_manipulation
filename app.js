@@ -8,6 +8,7 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
+require('dotenv').config();
 var AWS = require('aws-sdk');
 AWS.config.update({
 	region: "us-west-2",
@@ -65,8 +66,8 @@ app.use(function(req, res, next){
   next();
 })
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json()); // supports json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));  // supports url encoded bodies
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -78,6 +79,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/projects', projects);
 
+// user authentication
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

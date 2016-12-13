@@ -22,8 +22,9 @@ passport.use(new FacebookStrategy({
 		clientID: process.env.FACEBOOK_APP_ID,
 		clientSecret: process.env.FACEBOOK_APP_SECRET,
 		callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return",
-    profileFields: ['id', 'displayName', 'photos', 'email'],
-    enableProof: true
+		// callbackURL: "http://localhost:8081/login/facebook/return",
+		profileFields: ['id', 'displayName', 'photos', 'email'],
+		enableProof: true
   },
   //success function
   function(accessToken, refreshToken, profile, done) {
@@ -107,6 +108,15 @@ router.post('/upload', function(req, res, next) {
 	res.send({
 		'message': 'posting to /upload'
 	});
+
+	var payload = {
+		'Content-Type': req.body["Content-Type"],
+		'Content-Disposition': req.body["Content-Disposition"],
+		'Content-Length': req.body["Content-Length"]
+		'Video-URL': 's3-url-will-go-here.mov'
+	}
+
+
 })
 
 router.get('/videos/:id', function(req, res, next) {
@@ -185,10 +195,20 @@ router.get('/login/facebook/return',
   });
 
 router.get('/account',
-  // require('connect-ensure-login').ensureLoggedIn('/login'),
+  require('connect-ensure-login').ensureLoggedIn('/login'),
   function(req, res, next){
     res.render('profile', { user: req.user });
   });
 
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 module.exports = router;
