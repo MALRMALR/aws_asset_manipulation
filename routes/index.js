@@ -22,7 +22,7 @@ passport.use(new FacebookStrategy({
 		clientID: process.env.FACEBOOK_APP_ID,
 		clientSecret: process.env.FACEBOOK_APP_SECRET,
 		callbackURL: "http://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/login/facebook/return",
-		// callbackURL: "http://localhost:8081/login/facebook/return",
+
 		profileFields: ['id', 'displayName', 'photos', 'email'],
 		enableProof: true
   },
@@ -105,16 +105,15 @@ router.get('/upload', function(req, res, next) {
 });
 
 router.post('/upload', function(req, res, next) {
-	res.send({
-		'message': 'posting to /upload'
-	});
 
 	var payload = {
 		'Content-Type': req.body["Content-Type"],
 		'Content-Disposition': req.body["Content-Disposition"],
-		'Content-Length': req.body["Content-Length"]
+		'Content-Length': req.body["Content-Length"],
 		'Video-URL': 's3-url-will-go-here.mov'
 	}
+	res.json(payload);
+	// res.end();
 
 
 })
