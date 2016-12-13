@@ -3,14 +3,43 @@
   <head>
     <meta charset="utf-8">
     <title>Real Time Web Chat</title>
-    <script src="./../public/javascripts/chat.js"></script>
-    <script src="./../views/socket.io-client/dist/socket.io.js"></script>
+    <script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.js"></script>
   </head>
   <body>
-    <div id="#content" style="width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;"></div>
+    <div id="content" style="width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;"></div>
     <div class="controls">
-      <input type="text" name="" value="" style="width: 350px">
-      <input type="button" name="" value="send">
+      <input type="text" name="field" value="" style="width: 350px" id="field">
+      <input type="button" name="send" value="send" id="send">
     </div>
+    <script type="text/javascript">
+    window.onload = function() {
+
+        var messages = [];
+        var socket = io.connect('http://localhost:8081');
+        var field = document.getElementById("field");
+        var sendButton = document.getElementById("send");
+        var content = document.getElementById("content");
+
+        socket.on('message', function (data) {
+            if(data.message) {
+                messages.push(data.message);
+                var html = '';
+                for(var i=0; i<messages.length; i++) {
+                    html += messages[i] + '<br />';
+                }
+                content.innerHTML = html;
+                content.scrollTop = content.scrollHeight;
+            } else {
+                console.log("There is a problem:", data);
+            }
+        });
+
+        sendButton.onclick = function() {
+            var text = field.value;
+            socket.emit('send', { message: text });
+        };
+
+    }
+    </script>
   </body>
 </html>

@@ -8,7 +8,7 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-// require('dotenv').config();
+require('dotenv').config();
 // AWS config
 var AWS = require('aws-sdk');
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -30,7 +30,7 @@ var projects = require('./routes/projects');
 // instantiate express and require mysql
 var app = express();
 var mysql = require('mysql');
-
+var port = normalizePort(process.env.PORT || '8081');
 // var pool = mysql;
 //
 // var connection = mysql.createConnection({
@@ -48,7 +48,8 @@ var mysql = require('mysql');
 
 // sockets
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
+// var io = require('socket.io')(server);
+var io = require('socket.io').listen(app.listen(port));
 // writes to console all io connection events
 io.on('connection', function(socket){
 	console.log('a user connected');
@@ -57,10 +58,18 @@ io.on('connection', function(socket){
 	})
 })
 
+io.sockets.on('connection', function (socket) {
+    socket.emit('message', { message: 'welcome to the chat' });
+    socket.on('send', function (data) {
+        io.sockets.emit('message', data);
+    });
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.use(express.static('public'))
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(function(req, res, next){
