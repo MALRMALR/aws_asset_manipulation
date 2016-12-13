@@ -7,6 +7,7 @@ var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var passportTokenStrategy = require('passport-facebook-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var Q = require('q');
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 // var db = require('./../db');
@@ -219,54 +220,83 @@ function beginRecordingSession(projectPath, req, res){
 	// -- create DB RECORD NEW PROEJCT
 	//name, proejct_id
 
-	// scan users table
-	docClient.scan({TableName: 'demoUsers'}, function(err, data){
-		if (err){
-			console.log(err);
-		} else {
-			var userPool = data.Items;
-			// [1.] Read through users and pass any active users into projectUsers array
-			userPool.forEach(function(data){
-				console.log(data.username);
-				var person = data.username;
-				var id = data.user_id;
-				var user = { person: id };
-				if (data.isLoggedIn === true){
-					projectUsers.push(user);
-				}
-			})
-			console.log(projectUsers);
-			// write array to project
-			// enterUsersIntoProject();
-			var params = {
-				TableName: 'demoProjectsV3',
-				Key: {
-					name: projectCoordinates,
-					project_id: uuid.v1(),
-					userPool: projectUsers
-				}
-			};
-			docClient.put(params, function(err, data){
-				if (err){
-					console.log(err);
-				} else {
-				  console.log(data);
-				}
-			});
 
 
-		}
-	});
+	Q.fcall(
+		// scan users table
+		docClient.scan({TableName: 'demoUsers'}, function(err, data){
+			if (err){
+				console.log(err);
+			} else {
+				var userPool = data.Items;
+				// [1.] Read through users and pass any active users into projectUsers array
+				userPool.forEach(function(data){
+					console.log(data.username);
+					var person = data.username;
+					var id = data.user_id;
+					var user = { person: id };
+					if (data.isLoggedIn === true){
+						projectUsers.push(user);
+					}
+				})
+			}
+		}))
+		//update db record
+		.then(updateProjectRecord(projectUsers, projectCoordinates))
+		.then(createFolderOnS3(projectCoordinates, res))
+
+
 	// goes out and creates a proj.txt file inside of projectCoordinates
-	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates+"/ready.txt"}, function(err, data){
+
+}
+
+function updateProjectRecord(projectUsers, projectCoordinates){
+	// write array to project
+	// enterUsersIntoProject();
+	// this doens't work?  need some way to update projects DB record with users
+
+	var projParams = {
+		TableName: 'demoProjectsV3',
+		Item: {
+			"name": projectCoordinates,
+			"project_id": parseInt(randomString(4)),
+			"s3_folder": "http://gn-inbound.s3.amazonaws.com/" + projectCoordinates,
+			"project_users": projectUsers
+		}
+	};
+	docClient.put(projParams, function(err, data){
 		if (err){
 			console.log(err);
 		} else {
-			// console.log(data);
-			res.send(data);
-			res.end();
+			console.log(data.eTag);
 		}
 	})
 
 }
+
+function createFolderOnS3(projectCoordinates, res){
+	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates+"/ready.txt"}, function(err, data){
+		if (err){
+			console.log(err);
+		} else {
+			res.send(data);
+			res.end();
+		}
+	})
+}
+
+function randomString(length) {
+    var chars = '123456789'.split('');
+
+    if (! length) {
+        length = Math.floor(Math.random() * chars.length);
+    }
+
+    var str = '';
+    for (var i = 0; i < length; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
+}
+
 module.exports = router;
