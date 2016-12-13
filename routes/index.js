@@ -115,12 +115,12 @@ router.post('/upload', function(req, res, next) {
 		'Content-Type': req.params["Content-Type"],
 		'Content-Disposition': req.params["Content-Disposition"],
 		'Content-Length': req.params["Content-Length"],
-		'Video-URL': req.body["Video-URL"]
+		'payload': req.body["payload"]
 	}
 
 	var params = {
 		Bucket: 'gn-inbound',
-		Key: 'incoming.mov',
+		Key: videoHeaders["payload"],
 		Body: stream
 	}
 
@@ -169,25 +169,6 @@ router.put('/record', function(req, res, next) {
 
 	beginRecordingSession(projectPath, req, res);
 
-
-
-	// go out on s3 - save file path - can post /list/to/file/video.mp4
-	// even though 'folders' don't really exist on S3
-  /*
-  [1.] Go out and create a folder on S3 using coordinates from client
-  [2.]
-  */
-  // res.send(users);- are in geofence...?
-  // tracks status of videos through pipeline
-	/*
-	1.  Client tells server to start new project recording session - latitude and longitude
-	2.  Server responds with existing && current users in geofence
-	3.  server tells all clients that recording session is completed and being processed - sockets
-	4.  server sends notification via web sockets
-	5.  loads cloudfront
-	6.  sockets
-	*/
-	// res.json({ 'message': '/PUT/ => /record'});
 }) // end record
 
 
@@ -237,13 +218,14 @@ function beginRecordingSession(projectPath, req, res){
 	var projectCoordinates = projectPath;
 	// -- create DB RECORD NEW PROEJCT
 	//name, proejct_id
+
+	// scan users table
 	docClient.scan({TableName: 'demoUsers'}, function(err, data){
 		if (err){
 			console.log(err);
 		} else {
 			var userPool = data.Items;
-			// loop through all users, see who is logged in and add them to project
-
+			// [1.] Read through users and pass any active users into projectUsers array
 			userPool.forEach(function(data){
 				console.log(data.username);
 				var person = data.username;
@@ -256,20 +238,27 @@ function beginRecordingSession(projectPath, req, res){
 			console.log(projectUsers);
 			// write array to project
 			// enterUsersIntoProject();
-			docClient.put({
+			var params = {
 				TableName: 'demoProjectsV3',
-				Item: {
+				Key: {
 					name: projectCoordinates,
 					project_id: uuid.v1(),
 					userPool: projectUsers
+				}
+			};
+			docClient.put(params, function(err, data){
+				if (err){
+					console.log(err);
+				} else {
+				  console.log(data);
 				}
 			});
 
 
 		}
 	});
-
-	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates+"/proj.txt"}, function(err, data){
+	// goes out and creates a proj.txt file inside of projectCoordinates
+	s3.putObject({Bucket: 'gn-inbound', Key: projectCoordinates+"/ready.txt"}, function(err, data){
 		if (err){
 			console.log(err);
 		} else {
