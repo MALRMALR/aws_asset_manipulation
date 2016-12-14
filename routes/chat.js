@@ -8,7 +8,7 @@ var passportFacebook = require('passport-facebook');
 var passportTokenStrategy = require('passport-facebook-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var AWS = require('aws-sdk');
-var docClient = new AWS.DynamoDB.DocumentClient();
+// var docClient = new AWS.DynamoDB.DocumentClient();
 // var db = require('./../db');
 
 AWS.config.apiVersion = {
@@ -19,7 +19,7 @@ AWS.config.apiVersion = {
 AWS.config.update({region: 'us-west-2'})
 
 router.get('/',
-	function(req, res) {
+	function(req, res, next) {
 		res.render('chat');
 	})
 
