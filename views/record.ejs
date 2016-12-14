@@ -10,7 +10,8 @@
   <script type="text/javascript">
   window.onload = function() {
 
-    var liveSocket = io("ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/record")
+    var liveSocket = io("ws://54.214.168.107/record")
+    // var liveSocket = io('ws://localhost:8081/record');
 
 
     liveSocket.onopen(function(event){
