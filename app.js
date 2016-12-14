@@ -8,7 +8,7 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-// require('dotenv').config();
+require('dotenv').config();
 
 // routes
 var index = require('./routes/index');

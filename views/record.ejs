@@ -12,29 +12,33 @@
   window.onload = function() {
 
     // var liveSocket = io.connect('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/record');
-    var liveSocket = io();
+    var socket = io.connect("ws://localhost:8081/record");
+    socket.on('open', function(event) {
+      console.log('has established connection' + event);
+    })
 
-    liveSocket.onopen(function(event){
-      console.log('has established connection')
-    });
 
-
-    liveSocket.on('news', function(message){
+    socket.on('news', function(message){
       console.log(message);
       socket.emit('clientMessage', {data: 'hi michael'});
-    })
-    // liveSocket.onmessage(function(event){
-    //   console.log('ok')
-    //   console.log(event.data)
-    // });
-
-    liveSocket.onclose(function(){
-      console.log('closed');
     });
 
-    liveSocket.on('scream', function(data){
-      console.log(data);
+    socket.on('message', function(event) {
+      socket.emit('clientMessage', {data: 'hey bro'});
+    });
+
+    socket.on('close', function(){
+      console.log('closed');
     })
+
+    socket.on('scream', function(message){
+      console.log(message);
+    });
+
+    switch(event){
+      case 'news':
+
+    }
   };
   </script>
   </body>

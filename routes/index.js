@@ -126,6 +126,9 @@ router.post('/upload', function(req, res, next) {
 	// 	'Content-Length': req.params.Body["Content-Length"],
 	// 	'payload': req.body.Body["payload"]
 	// }
+	// upload individual viddo assets and imu data.
+
+	// naming convention
 
 	console.log(req.params);
 	var objParams = {
@@ -134,9 +137,11 @@ router.post('/upload', function(req, res, next) {
 		Body: 'fuckkkkkkyou'
 	}
 
+
 	s3.upload(objParams, function(err, data){
 		console.log(err, data);
 	});
+
 	res.json(data);
 
 	// res.end();
@@ -155,40 +160,20 @@ router.get('/videos/:id', function(req, res, next) {
 		}
 		queryDatabase(apiCallParams, response, 'videoGet');
 	})
-	// routes for iOS client
-// router.put('/record', function(req, res, next) {
-// 	// client tells server to start new recording session
-// 	// server notifies client of users in recording session
-// 	// server tells all clients that recording session is completed and being processed
-// 	// {
-// 	// 	latitude: 22
-// 	// 	longitude: 44.9922
-// 	// }
-// 	var coordinates = querystring.parse(req.url.split("?")[1])
-// 	// res.json(coordinates);
-// 	// NOW - take coordinates and save it for your file paths.
-//
-//  	var projectPath = coordinates.latitude + "_" + coordinates.longitude;
-// 	if (projectPath !== ""){
-// 		beginRecordingSession(projectPath, req, res);
-// 	}
-//
-// }) // end record
 
-
-// router.post('/login', function(req, res, next) {
-// 	passport.authenticate('local', {
-// 		failureRedirect: '/login'
-// 	})
-// 	res.redirect('/projects')
-// })
-// router.get('/login', function(req, res, next) {
-// 	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
-// })
-// router.get('/logout', function(req, res, next) {
-// 	req.logout();
-// 	res.redirect('/');
-// })
+router.post('/login', function(req, res, next) {
+	passport.authenticate('local', {
+		failureRedirect: '/login'
+	})
+	res.redirect('/projects')
+})
+router.get('/login', function(req, res, next) {
+	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
+})
+router.get('/logout', function(req, res, next) {
+	req.logout();
+	res.redirect('/');
+})
 
 //passport facebook routes
 // PLEASE be mindful of callback baseURLS (line 24) if you are deploying (e.g. localhost -> EBS);
@@ -197,24 +182,24 @@ router.get('/login',
     res.render('login');
   });
 
-router.get('/login/facebook',
-  passport.authenticate('facebook'),
-  function(req, res, next){
-    res.redirect('/');
-  });
-
-router.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res, next) {
-    res.redirect('/');
-  });
-
-router.get('/account',
-  // require('connect-ensure-login').ensureLoggedIn('/login'),
-  function(req, res, next){
-    res.render('profile', { user: req.user });
-  });
-
+// router.get('/login/facebook',
+//   passport.authenticate('facebook'),
+//   function(req, res, next){
+//     res.redirect('/');
+//   });
+//
+// router.get('/login/facebook/return',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   function(req, res, next) {
+//     res.redirect('/');
+//   });
+//
+// router.get('/account',
+//   // require('connect-ensure-login').ensureLoggedIn('/login'),
+//   function(req, res, next){
+//     res.render('profile', { user: req.user });
+//   });
+//
 
 // utility
 function isAuthenticated(){
