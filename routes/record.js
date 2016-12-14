@@ -19,15 +19,14 @@ AWS.config.apiVersion = {
 AWS.config.update({region: 'us-west-2'})
 /// routes
 
-
 router.get('/', function(req, res, next) {
+	socket.emit('news', { hello: 'world' });
   res.render('record');
-	io.sockets.emit('hi there');
+	io.sockets.send('hello...');
 
 });
 
 router.put('/', function(req, res, next){
-	// console.log(req);
   io.sockets.send("hello clarice...");
 })
 

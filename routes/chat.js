@@ -19,9 +19,8 @@ AWS.config.apiVersion = {
 AWS.config.update({region: 'us-west-2'})
 
 router.get('/',
-	function(req, res, next) {
+	function(req, res) {
 		res.render('chat');
-    next();
 	})
 
 module.exports = router;
