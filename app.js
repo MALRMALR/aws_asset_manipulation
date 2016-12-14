@@ -8,7 +8,7 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-// require('dotenv').config();
+require('dotenv').config();
 
 // routes
 var index = require('./routes/index');
@@ -53,10 +53,6 @@ var io = require('socket.io')(server);
 io.on('connection', function(socket){
 	// socket.emit('news', { hello: socket });
 	console.log('a user connected');
-	// console.log(socket);
-	socket.on('clientMessage', function(data){
-		console.log('client message triggered');
-	})
 
 	socket.on('disconnect', function(){
 		console.log('user disconnected');

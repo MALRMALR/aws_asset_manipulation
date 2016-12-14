@@ -119,24 +119,25 @@ router.post('/upload', function(req, res, next) {
 	// 	'Content-Length': req.body["Content-Length"],
 	// 	'Video-URL': req.body["Video-URL"]
 	// }
+	//
+	// var videoHeaders = {
+	// 	'Content-Type': req.params.Body["Content-Type"],
+	// 	'Content-Disposition': req.params.Body["Content-Disposition"],
+	// 	'Content-Length': req.params.Body["Content-Length"],
+	// 	'payload': req.body.Body["payload"]
+	// }
 
-	var videoHeaders = {
-		'Content-Type': req.params["Content-Type"],
-		'Content-Disposition': req.params["Content-Disposition"],
-		'Content-Length': req.params["Content-Length"],
-		'payload': req.body["payload"]
-	}
-
-	var params = {
+	console.log(req.params);
+	var objParams = {
 		Bucket: 'gn-inbound',
-		Key: videoHeaders["payload"],
-		Body: stream
+		Key: 'testvideo.txt',
+		Body: 'fuckkkkkkyou'
 	}
 
-	s3.upload(params, function(err, data){
+	s3.upload(objParams, function(err, data){
 		console.log(err, data);
 	});
-	res.json(payload);
+	res.json(data);
 
 	// res.end();
 

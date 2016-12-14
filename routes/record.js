@@ -39,9 +39,14 @@ router.put('/', function(req, res){
 		  body = Buffer.concat(body).toString();
 		  // at this point, `body` has the entire request body stored in it as a string
 			res.send(body);
-			res.io.sockets.send(body);
 		});
-		console.log(objParams);
+		// console.log(objParams);
+		// now go look  for users that are signed in - send to client
+		// video - processing: true - progress...
+
+		// once video is received, final video and meta data sent to all clients
+
+		//
 
 })
 
