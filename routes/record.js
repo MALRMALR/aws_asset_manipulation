@@ -20,9 +20,9 @@ AWS.config.update({region: 'us-west-2'})
 /// routes
 
 router.get('/', function(req, res, next) {
-	// io.sockets.emit('scream', { message: 'SCREAMMMMMMMM?' });
+	io.sockets.emit('scream', { message: 'SCREAMMMMMMMM?' });
   res.render('record');
-	// res.end();
+	res.end();
 });
 
 router.put('/', function(req, res){
