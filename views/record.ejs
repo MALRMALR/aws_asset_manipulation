@@ -11,7 +11,7 @@
   <script type="text/javascript">
   window.onload = function() {
 
-    var liveSocket = io.connect('gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/record');
+    var liveSocket = io.connect('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/record');
     // var liveSocket = io.connect('ws://localhost:8081/record');
 
     liveSocket.onopen(function(event){
