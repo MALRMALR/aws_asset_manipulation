@@ -33,7 +33,7 @@ window.onload = function() {
 
 
   // Create a new WebSocket.
-  var socket = io('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com:8081/chat');
+  var socket = io('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/chat');
 
 	socket.onopen = function(event) {
 		socketStatus.innerHTML = 'Connected to: ' + event.currentTarget.URL;
