@@ -22,11 +22,18 @@ AWS.config.update({region: 'us-west-2'})
 router.get('/', function(req, res, next) {
 	io.sockets.emit('scream', { message: 'SCREAMMMMMMMM?' });
   res.render('record');
+	res.end();
 });
 
 router.put('/', function(req, res){
-		var incomingLatitude =  req;
-				// incomingLongitude =  req;
+		// var incomingLatitude =  req;
+		// 		incomingLongitude =  req;
+
+		// need to save to dynamo db...
+
+		// obj creation -lambda - will register - video.
+
+		//
 
 		var objParams = {
 			latitude: incomingLatitude
@@ -47,6 +54,7 @@ router.put('/', function(req, res){
 		// once video is received, final video and meta data sent to all clients
 
 		//
+		res.end();
 
 })
 
