@@ -10,18 +10,17 @@
   <script type="text/javascript">
   window.onload = function() {
 
-    // var liveSocket = io("ws://54.214.168.107:8081/record")
-    var liveSocket = io.connect('ws://localhost:8081/record');
+    var liveSocket = io("ws://54.214.168.107:8081/record")
+    // var liveSocket = io.connect('ws://localhost:8081/record');
 
     liveSocket.onopen(function(event){
       console.log('has established connection')
-      liveSocket.send('Can you hear me?')
     });
 
 
-    liveSocket.on('news', function(data){
-      console.log('data');
-      socket.emit('clientMessage', {message: 'data'});
+    liveSocket.on('news', function(message){
+      console.log(message);
+      socket.emit('clientMessage', {data: 'hi michael'});
     })
     // liveSocket.onmessage(function(event){
     //   console.log('ok')

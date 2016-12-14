@@ -20,14 +20,29 @@ AWS.config.update({region: 'us-west-2'})
 /// routes
 
 router.get('/', function(req, res, next) {
-	socket.emit('news', { hello: 'world' });
+	io.sockets.emit('news', { message: 'world' });
   res.render('record');
-	io.sockets.send('hello...');
-
 });
 
-router.put('/', function(req, res, next){
-  io.sockets.send("hello clarice...");
+router.put('/', function(req, res){
+		var incomingLatitude =  req;
+				// incomingLongitude =  req;
+
+		var objParams = {
+			latitude: incomingLatitude
+			// longitude: incomingLongitude
+		}
+		var body = [];
+		req.on('data', function(chunk) {
+		  body.push(chunk);
+		}).on('end', function() {
+		  body = Buffer.concat(body).toString();
+		  // at this point, `body` has the entire request body stored in it as a string
+			res.send(body);
+			res.io.sockets.send(body);
+		});
+		console.log(objParams);
+
 })
 
 router.ws('/hp', function(ws, req) {
