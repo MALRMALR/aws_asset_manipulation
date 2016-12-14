@@ -12,8 +12,8 @@
   window.onload = function() {
 
     // var liveSocket = io.connect('ws://54.214.168.107:8081/record');
-    var socket = io.connect("ws://localhost:8081/record");
-    // var socket = io.connect('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/record');
+    // var socket = io.connect("ws://localhost:8081/record");
+    var socket = io.connect('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/record');
     var socket = io();
     socket.on('open', function(event) {
       console.log('has established connection' + event);

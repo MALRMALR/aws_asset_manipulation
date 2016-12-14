@@ -24,8 +24,8 @@
 <script src="http://d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-	// var socket = io.connect('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/chat');
-	var socket = io();
+	var socket = io.connect('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/chat');
+	// var socket = io();
 	$('form').submit(function(){
 		socket.emit('chat message', $('#m').val());
 		$('#m').val('');
