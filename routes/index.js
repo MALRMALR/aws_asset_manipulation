@@ -168,7 +168,7 @@ router.post('/login', function(req, res, next) {
 	res.redirect('/projects')
 })
 router.get('/login', function(req, res, next) {
-	res.render('login.jade', {message: 'Please Log In', title: 'Go Native API'});
+	res.render('login2', {message: 'Please Log In', title: 'Go Native API'});
 })
 router.get('/logout', function(req, res, next) {
 	req.logout();
@@ -177,10 +177,10 @@ router.get('/logout', function(req, res, next) {
 
 //passport facebook routes
 // PLEASE be mindful of callback baseURLS (line 24) if you are deploying (e.g. localhost -> EBS);
-router.get('/login',
-  function(req, res, next){
-    res.render('login');
-  });
+// router.get('/login',
+//   function(req, res, next){
+//     res.render('login');
+//   });
 
 // router.get('/login/facebook',
 //   passport.authenticate('facebook'),

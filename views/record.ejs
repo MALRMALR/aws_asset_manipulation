@@ -11,9 +11,9 @@
   <script type="text/javascript">
   window.onload = function() {
 
-    // var socket = io.connect("ws://localhost:8081/record");
-    var socket = io.connect('//gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com:8081/record');
-    var socket = io();
+    // var socket = io();
+    var socket = io.connect('//54.214.168.107:8081/record');
+
     socket.on('open', function(event) {
       console.log('has established connection' + event);
     })
