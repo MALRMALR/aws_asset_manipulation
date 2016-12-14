@@ -5,98 +5,34 @@
 	<title>WebSockets Demo</title>
 
 	<!-- <link rel="stylesheet" href="style.css"> -->
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body { font: 13px Helvetica, Arial; }
+		form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+		form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+		form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+		#messages { list-style-type: none; margin: 0; padding: 0; }
+		#messages li { padding: 5px 10px; }
+		#messages li:nth-child(odd) { background: #eee; }
+	</style>
 </head>
 <body>
-	<div id="page-wrapper">
-		<h1>WebSockets Demo</h1>
-
-		<div id="status">Connecting...</div>
-
-		<ul id="messages"></ul>
-
-		<form id="message-form" action="#" method="post">
-			<textarea id="message" placeholder="Write your message here..." required></textarea>
-			<button type="submit">Send Message</button>
-			<button type="button" id="close">Close Connection</button>
-		</form>
-	</div>
-<script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.min.js"></script>
-<script type="text/javascript">
-window.onload = function() {
-
-  // Get references to elements on the page.
-  var form = document.getElementById('message-form');
-  var messageField = document.getElementById('message');
-  var messagesList = document.getElementById('messages');
-  var socketStatus = document.getElementById('status');
-  var closeBtn = document.getElementById('close');
-
-
-  // Create a new WebSocket.
-  var socket = io('ws://54.214.168.107:8081/chat');
-	// var socket = io('ws://localhost:8081/chat');
-
-	socket.onopen = function(event) {
-		socketStatus.innerHTML = 'Connected to: ' + event.currentTarget.URL;
-		// dsocketStatus.className = 'open';
-	};
-  // Handle any errors that occur.
-  socket.onerror = function(error) {
-    console.log('WebSocket Error: ' + error);
-  };
-
-
-  // Show a connected message when the WebSocket is opened.
-
-
-  // Handle messages sent by the server.
-  socket.onmessage = function(event) {
-    var message = event.data;
-    messagesList.innerHTML += '<li class="received"><span>Received:</span>' +
-                               message + '</li>';
-  };
-
-
-  // Show a disconnected message when the WebSocket is closed.
-  socket.onclose = function(event) {
-    socketStatus.innerHTML = 'Disconnected from WebSocket.';
-    socketStatus.className = 'closed';
-  };
-
-
-  // Send a message when the form is submitted.
-  form.onsubmit = function(e) {
-    e.preventDefault();
-
-    // Retrieve the message from the textarea.
-    var message = messageField.value;
-
-    // Send the message through the WebSocket.
-    socket.send(message);
-
-    // Add the message to the messages list.
-    messagesList.innerHTML += '<li class="sent"><span>Sent:</span>' + message +
-                              '</li>';
-
-    // Clear out the message field.
-    messageField.value = '';
-
-    return false;
-  };
-
-
-  // Close the WebSocket connection when the close button is clicked.
-  closeBtn.onclick = function(e) {
-    e.preventDefault();
-
-    // Close the WebSocket.
-    socket.close();
-
-    return false;
-  };
-
-};
-
+	<ul id="messages"></ul>
+	<form action="">
+		<input id="m" autocomplete="off" /><button>Send</button>
+	</form>
+<script src="http://d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+	var socket = io.conenct('gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/chat');
+	// var socket = io.connect('ws://localhost:8081/chat');
+	$('form').submit(function(){
+		socket.emit('chat message', $('#m').val());
+		$('#m').val('');
+		return false;
+	});
+	socket.on('chat message', function(msg){
+		$('#messages').append($('<li>').text(msg));
+	});
 </script>
-</body>
 </html>

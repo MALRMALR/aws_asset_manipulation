@@ -51,28 +51,17 @@ var io = require('socket.io')(server);
 // writes to console all io connection events
 // chatroom
 io.on('connection', function(socket){
-	// socket.emit('news', { hello: socket });
 	console.log('a user connected');
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
 
 	socket.on('disconnect', function(){
 		console.log('user disconnected');
 	});
-
-
-	// // custom event listeners
-	// socket.on('', function(data){
-	// 	console.log(data);
-	// });
-
-	socket.on('clientMessage', function (data) {
-		console.log(data);
-	});
-})
-
-io.on('connection', function(socket) {
 });
 
-//
+
 // io.sockets.on('connection', function (socket) {
 //     socket.emit('message', { message: 'welcome to the chat' });
 //     socket.on('send', function (data) {

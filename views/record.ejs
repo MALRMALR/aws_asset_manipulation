@@ -6,11 +6,12 @@
   </head>
   <body>
 
-  <script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.min.js"></script>
+    <script src="http://d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script type="text/javascript">
   window.onload = function() {
 
-    var liveSocket = io("ws://54.214.168.107:8081/record")
+    var liveSocket = io.connect('gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com/record');
     // var liveSocket = io.connect('ws://localhost:8081/record');
 
     liveSocket.onopen(function(event){
