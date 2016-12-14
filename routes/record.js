@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
 
 router.put('/', function(req, res, next){
 	// console.log(req);
-  io.sockets.emit("hello muthafucka");
+  io.sockets.send("hello clarice...");
 })
 
 router.ws('/hp', function(ws, req) {
