@@ -26,8 +26,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.put('/', function(req, res){
-		// var incomingLatitude =  req;
-		// 		incomingLongitude =  req;
+		var incomingLatitude =  req.body.latitude,
+				incomingLongitude =  req.body.longitude;
 
 		// need to save to dynamo db...
 
@@ -36,8 +36,8 @@ router.put('/', function(req, res){
 		//
 
 		var objParams = {
-			latitude: incomingLatitude
-			// longitude: incomingLongitude
+			latitude: incomingLatitude,
+			longitude: incomingLongitude
 		}
 		var body = [];
 		req.on('data', function(chunk) {
