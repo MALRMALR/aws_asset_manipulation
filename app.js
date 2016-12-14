@@ -14,7 +14,8 @@ require('dotenv').config();
 var index = require('./routes/index');
 var users = require('./routes/users');
 var projects = require('./routes/projects');
-// var chat = require('./routes/chat');
+var chat = require('./routes/chat');
+var record = require('./routes/record');
 
 //AWS config
 var AWS = require('aws-sdk');
@@ -44,9 +45,9 @@ var mysql = require('mysql');
 // })
 
 // web sockets
-var server = require('http').Server(app);
+var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-// var io = require('socket.io').listen(app.listen(8080));
+// var io = require('socket.io').listen(server);
 // writes to console all io connection events
 // chatroom
 io.on('connection', function(socket){
@@ -87,7 +88,8 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/projects', projects);
-// app.use('/chat', chat)
+app.use('/chat', chat);
+app.use('/record', record)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

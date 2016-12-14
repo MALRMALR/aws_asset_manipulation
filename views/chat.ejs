@@ -1,55 +1,101 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Real Time Web Chat</title>
-    <script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.js"></script>
-  </head>
-  <body>
-    <div id="content" style="width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;"></div>
-    <div class="controls">
-      <p>Name:</p>
-      <input id="name" type="text" name="" style="width: 350px;">
-      <br />
-      <input id="field" type="text" name="" style="width: 350px;">
-      <br />
-      <input id="send" type="submit" name="send">
-    </div>
-    <script type="text/javascript">
-    window.onload = function() {
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>WebSockets Demo</title>
 
-        var messages = [];
-        var socket = io.connect('//gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com:8081');
-        var field = document.getElementById("field");
-        var sendButton = document.getElementById("send");
-        var content = document.getElementById("content");
-        var name = document.getElementById("name");
+	<!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+	<div id="page-wrapper">
+		<h1>WebSockets Demo</h1>
 
-        socket.on('message', function (data) {
-            if(data.message) {
-                messages.push(data);
-                var html = '';
-                for(var i=0; i<messages.length; i++) {
-                    html += '<b>' + (messages[i].username ? messages[i].username : 'Server') + ': </b>';
-                    html += messages[i].message + '<br />';
-                }
-                content.innerHTML = html;
-                content.scrollTop = content.scrollHeight;
-            } else {
-                console.log("There is a problem:", data);
-            }
-        });
+		<div id="status">Connecting...</div>
 
-        sendButton.onclick = function() {
-            if(name.value == "") {
-                alert("Please type your name!");
-            } else {
-                var text = field.value;
-                socket.emit('send', { message: text, username: name.value });
-            }
-        };
+		<ul id="messages"></ul>
 
-    }
-    </script>
-  </body>
+		<form id="message-form" action="#" method="post">
+			<textarea id="message" placeholder="Write your message here..." required></textarea>
+			<button type="submit">Send Message</button>
+			<button type="button" id="close">Close Connection</button>
+		</form>
+	</div>
+<script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.min.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+
+  // Get references to elements on the page.
+  var form = document.getElementById('message-form');
+  var messageField = document.getElementById('message');
+  var messagesList = document.getElementById('messages');
+  var socketStatus = document.getElementById('status');
+  var closeBtn = document.getElementById('close');
+
+
+  // Create a new WebSocket.
+  var socket = io('ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com:8081/chat');
+
+	socket.onopen = function(event) {
+		socketStatus.innerHTML = 'Connected to: ' + event.currentTarget.URL;
+		// dsocketStatus.className = 'open';
+	};
+  // Handle any errors that occur.
+  socket.onerror = function(error) {
+    console.log('WebSocket Error: ' + error);
+  };
+
+
+  // Show a connected message when the WebSocket is opened.
+
+
+  // Handle messages sent by the server.
+  socket.onmessage = function(event) {
+    var message = event.data;
+    messagesList.innerHTML += '<li class="received"><span>Received:</span>' +
+                               message + '</li>';
+  };
+
+
+  // Show a disconnected message when the WebSocket is closed.
+  socket.onclose = function(event) {
+    socketStatus.innerHTML = 'Disconnected from WebSocket.';
+    socketStatus.className = 'closed';
+  };
+
+
+  // Send a message when the form is submitted.
+  form.onsubmit = function(e) {
+    e.preventDefault();
+
+    // Retrieve the message from the textarea.
+    var message = messageField.value;
+
+    // Send the message through the WebSocket.
+    socket.send(message);
+
+    // Add the message to the messages list.
+    messagesList.innerHTML += '<li class="sent"><span>Sent:</span>' + message +
+                              '</li>';
+
+    // Clear out the message field.
+    messageField.value = '';
+
+    return false;
+  };
+
+
+  // Close the WebSocket connection when the close button is clicked.
+  closeBtn.onclick = function(e) {
+    e.preventDefault();
+
+    // Close the WebSocket.
+    socket.close();
+
+    return false;
+  };
+
+};
+
+</script>
+</body>
 </html>

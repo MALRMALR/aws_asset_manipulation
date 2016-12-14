@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>record</title>
+  </head>
+  <body>
+
+  <script src="http://gn-inbound.s3.amazonaws.com/library/socket.io-client/dist/socket.io.min.js"></script>
+  <script type="text/javascript">
+  window.onload = function() {
+
+    var liveSocket = io("ws://gnappwithsockets.zhjpne8fw9.us-west-2.elasticbeanstalk.com:8081/record")
+
+
+    liveSocket.onopen(function(event){
+      console.log('has established connection')
+      liveSocket.send('Can you hear me?')
+    });
+
+    // liveSocket.onmessage(function(event){
+    //   console.log('ok')
+    //   console.log(event.data)
+    // });
+
+    liveSocket.onclose(function(){
+      console.log('closed');
+    });
+
+    liveSocket.on('update_hp', function(data){
+      console.log('fuckyeah');
+    })
+  };
+  </script>
+  </body>
+</html>
