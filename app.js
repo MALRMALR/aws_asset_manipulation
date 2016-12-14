@@ -8,14 +8,15 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-require('dotenv').config();
+// require('dotenv').config();
 
-// routes
+// routes -- socket - IO // login/
 var index = require('./routes/index');
-var users = require('./routes/users');
-var projects = require('./routes/projects');
 var chat = require('./routes/chat');
 var record = require('./routes/record');
+// models -- dynamo db
+var users = require('./routes/users');
+var projects = require('./routes/projects');
 
 //AWS config
 var AWS = require('aws-sdk');

@@ -11,8 +11,11 @@
   <script type="text/javascript">
   window.onload = function() {
 
-    // var socket = io();
+    // PROD - DO NOT CHANGE
     var socket = io.connect('//54.214.168.107:8081/record');
+
+    // DEV // LOCAL - DO NOT CHANGE
+    // var socket = io();
 
     socket.on('open', function(event) {
       console.log('has established connection' + event);

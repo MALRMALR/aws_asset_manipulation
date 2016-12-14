@@ -120,12 +120,12 @@ router.post('/upload', function(req, res, next) {
 	// 	'Video-URL': req.body["Video-URL"]
 	// }
 	//
-	// var videoHeaders = {
-	// 	'Content-Type': req.params.Body["Content-Type"],
-	// 	'Content-Disposition': req.params.Body["Content-Disposition"],
-	// 	'Content-Length': req.params.Body["Content-Length"],
-	// 	'payload': req.body.Body["payload"]
-	// }
+	var videoHeaders = {
+		'Content-Type': req.params.Body["Content-Type"],
+		'Content-Disposition': req.params.Body["Content-Disposition"],
+		'Content-Length': req.params.Body["Content-Length"],
+		'payload': req.body.Body["payload"]
+	}
 	// upload individual viddo assets and imu data.
 
 	// naming convention
@@ -160,46 +160,46 @@ router.get('/videos/:id', function(req, res, next) {
 		}
 		queryDatabase(apiCallParams, response, 'videoGet');
 	})
-
-router.post('/login', function(req, res, next) {
-	passport.authenticate('local', {
-		failureRedirect: '/login'
-	})
-	res.redirect('/projects')
-})
-router.get('/login', function(req, res, next) {
-	res.render('login2', {message: 'Please Log In', title: 'Go Native API'});
-})
-router.get('/logout', function(req, res, next) {
-	req.logout();
-	res.redirect('/');
-})
+//
+// router.post('/login', function(req, res, next) {
+// 	passport.authenticate('local', {
+// 		failureRedirect: '/login'
+// 	})
+// 	res.redirect('/projects')
+// })
+// router.get('/login', function(req, res, next) {
+// 	res.render('login2', {message: 'Please Log In', title: 'Go Native API'});
+// })
+// router.get('/logout', function(req, res, next) {
+// 	req.logout();
+// 	res.redirect('/');
+// })
 
 //passport facebook routes
 // PLEASE be mindful of callback baseURLS (line 24) if you are deploying (e.g. localhost -> EBS);
-// router.get('/login',
-//   function(req, res, next){
-//     res.render('login');
-//   });
+router.get('/login',
+  function(req, res, next){
+    res.render('login');
+  });
 
-// router.get('/login/facebook',
-//   passport.authenticate('facebook'),
-//   function(req, res, next){
-//     res.redirect('/');
-//   });
-//
-// router.get('/login/facebook/return',
-//   passport.authenticate('facebook', { failureRedirect: '/login' }),
-//   function(req, res, next) {
-//     res.redirect('/');
-//   });
-//
-// router.get('/account',
-//   // require('connect-ensure-login').ensureLoggedIn('/login'),
-//   function(req, res, next){
-//     res.render('profile', { user: req.user });
-//   });
-//
+router.get('/login/facebook',
+  passport.authenticate('facebook'),
+  function(req, res, next){
+    res.redirect('/');
+  });
+
+router.get('/login/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res, next) {
+    res.redirect('/');
+  });
+
+router.get('/account',
+  // require('connect-ensure-login').ensureLoggedIn('/login'),
+  function(req, res, next){
+    res.render('profile', { user: req.user });
+  });
+
 
 // utility
 function isAuthenticated(){
