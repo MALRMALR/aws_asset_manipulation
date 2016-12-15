@@ -8,7 +8,7 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
-// require('dotenv').config();
+require('dotenv').config();
 
 // routes -- socket - IO // login/
 var index = require('./routes/index');
@@ -46,7 +46,9 @@ var mysql = require('mysql');
 // })
 
 // web sockets
+// pass express to http server
 var server = require('http').createServer(app);
+// pass http server to socket.io
 var io = require('socket.io')(server);
 // var io = require('socket.io').listen(server);
 // writes to console all io connection events
@@ -61,6 +63,8 @@ io.on('connection', function(socket){
 		console.log('user disconnected');
 	});
 });
+
+// Do you understand that a webSocket connection starts as an HTTP request with some custom headers and then when both sides agree, the protocol is switched from HTTP to webSocket? So, you just need a handler looking at all the incoming HTTP requests for the websocket upgrade header and then you can pass that socket off to your webSocket code. If you use socket.io in both client and server, it handles all this for you by just hooking into your http server to do just that. You don't create a separate webSocket server per se. –
 
 
 // io.sockets.on('connection', function (socket) {
@@ -84,7 +88,7 @@ app.use(function(req, res, next){
 app.use(logger('dev'));
 app.use(bodyParser.json()); // supports json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));  // supports url encoded bodies
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // add passport middleware for auth

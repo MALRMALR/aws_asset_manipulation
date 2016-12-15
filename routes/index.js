@@ -200,7 +200,6 @@ router.get('/account',
     res.render('profile', { user: req.user });
   });
 
-
 // utility
 function isAuthenticated(){
 	// scan dynamo db

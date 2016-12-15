@@ -35,10 +35,11 @@ router.put('/', function(req, res){
 
 		//
 
-		var objParams = {
-			latitude: incomingLatitude,
-			longitude: incomingLongitude
-		}
+		// var objParams = {
+		
+		// 	latitude: incomingLatitude,
+		// 	longitude: incomingLongitude
+		// }
 		var body = [];
 		req.on('data', function(chunk) {
 		  body.push(chunk);
