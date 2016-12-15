@@ -5,45 +5,34 @@
     <title>record</title>
   </head>
   <body>
+    <div id="message-board">
 
-    <script src="http://d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-  <script type="text/javascript">
-  window.onload = function() {
+    </div>
+    <script src="//d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript">
+    i = 0;
+    window.onload = function() {
 
-    // PROD - DO NOT CHANGE
-    var socket = io.connect('//54.214.168.107:8081/record');
+      // PROD - DO NOT CHANGE
+      var recordSocket = io.connect('//54.214.168.107:8081/record');
 
-    // DEV // LOCAL - DO NOT CHANGE
-    // var socket = io();
-
-    socket.on('open', function(event) {
-      console.log('has established connection' + event);
-    })
-
-
-    socket.on('news', function(message){
-      console.log(message);
-      socket.emit('clientMessage', {data: 'hi michael'});
-    });
-
-    socket.on('message', function(event) {
-      socket.emit('clientMessage', {data: 'hey bro'});
-    });
-
-    socket.on('close', function(){
-      console.log('closed');
-    })
-
-    socket.on('scream', function(message){
-      console.log(message);
-    });
-
-    switch(event){
-      case 'news':
-
-    }
-  };
-  </script>
+      // DEV // LOCAL - DO NOT CHANGE
+      // var recordSocket = io();
+      recordSocket.emit('startRecording', 'file.mov');
+      console.log('begin recording...');
+      // use io client engine for upload!!!!
+      recordSocket.on('connection', function(msg){
+        recordSocket.emit('hi', msg);
+      });
+      recordSocket.on('hi', function(msg){
+        var numPeople = i + 1;
+        var html = '<li>There are  #' + numPeople + ' connected</li>';
+        $('#message-board').append(html);
+        i++;
+      })
+      ///
+    };
+    </script>
   </body>
 </html>

@@ -21,19 +21,22 @@
 	<form action="submit">
 		<input id="m" autocomplete="off" /><button>Send</button>
 	</form>
-<script src="http://d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="//d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.js"></script>
 <script>
 	// PROD -- DO NOT CHANGE
   // DEV // LOCAL - DO NOT CHANGE
+	// [1.]  on form submit - Socket emits chat mesasge event with contents of their message
   var socket = io();
 	$('form').submit(function(){
 		socket.emit('chat message', $('#m').val());
 		$('#m').val('');
 		return false;
 	});
+	// [2.] set up 'chat message' event listener - append msgs to window
 	socket.on('chat message', function(msg){
 		$('#messages').append($('<li>').text(msg));
 	});
+
 </script>
 </html>
