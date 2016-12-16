@@ -15,8 +15,13 @@
     window.onload = function() {
 
       // PROD - DO NOT CHANGE
-      var recordSocket = io.connect('//54.214.168.107:8081/record');
+      // var recordSocket = io.connect('//54.214.168.107:8081/record');
+      var recordSOcket = io();
 
+      $("#button").on("click", function(e){
+        recordSocket.open();
+        recordSocket.emit('ping', 'hello human');
+      });
       // DEV // LOCAL - DO NOT CHANGE
       // var recordSocket = io();
       recordSocket.emit('startRecording', 'file.mov');

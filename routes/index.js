@@ -111,7 +111,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Go Native API v0.0.1' });
 });
 
-router.post('/upload', function(req, res, next) {
+router.put('/upload', function(req, res, next) {
 
 	// {
 	// 	'Content-Type': 'MP4',
@@ -120,29 +120,30 @@ router.post('/upload', function(req, res, next) {
 	// 	'Video-URL': req.body["Video-URL"]
 	// }
 	//
-	var videoHeaders = {
-		'Content-Type': req.params.Body["Content-Type"],
-		'Content-Disposition': req.params.Body["Content-Disposition"],
-		'Content-Length': req.params.Body["Content-Length"],
-		'payload': req.body.Body["payload"]
-	}
+	// var videoHeaders = {
+	// 	'Content-Type': req.params.Body["Content-Type"],
+	// 	'Content-Disposition': req.params.Body["Content-Disposition"],
+	// 	'Content-Length': req.params.Body["Content-Length"],
+	// 	'payload': req.body.Body["payload"]
+	// }
 	// upload individual viddo assets and imu data.
 
 	// naming convention
 
-	console.log(req.params);
+	// console.log(videoHeaders);
 	var objParams = {
 		Bucket: 'gn-inbound',
 		Key: 'testvideo.txt',
 		Body: 'fuckkkkkkyou'
 	}
+	console.log(req);
 
+	// s3.upload(objParams, function(err, data){
+	// 	console.log(err, data);
+	// });
 
-	s3.upload(objParams, function(err, data){
-		console.log(err, data);
-	});
-
-	res.json(data);
+	// res.json(data);
+	next();
 
 	// res.end();
 
