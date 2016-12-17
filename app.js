@@ -51,11 +51,28 @@ var server = require('http').createServer(app);
 // pass http server to socket.io
 var io = require('socket.io')(server);
 // var io = require('socket.io').listen(server);
+var dl  = require('delivery')
+	,	fs  = require('fs');
 
 io.on('connection', function(socket){
 	// chatroom stuff
-	console.log('a user connected');
+	// client to server delivery
+	var delivery = dl.listen(socket);
+	// console.log(delivery);
+  delivery.on('receive.success',function(file){
+    var params = file.params;
+    fs.writeFile(file.name,file.buffer, function(err){
+      if(err){
+        console.log('File could not be saved.');
+      }else{
+        console.log('File saved.');
+      };
+    });
+  });
 
+
+
+	console.log('a user connected');
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });

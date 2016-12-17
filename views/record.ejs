@@ -5,33 +5,36 @@
     <title>record</title>
   </head>
   <body>
-    <div id="message-board">
-      <button id="button" type="button" name="button">click me</button>
+    <div>
+      <input type="file" name="file-uploader" value="">
+      <input type="submit" name="" value="upload">
     </div>
     <script src="//d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="//s3-us-west-2.amazonaws.com/gn-inbound/library/delivery/lib/client/delivery.js">
+
+    </script>
     <script type="text/javascript">
-    i = 0;
-    window.onload = function() {
+    $(function(){
+      var socket = io.connect('http://localhost:8081/record');
 
-      // PROD - DO NOT CHANGE
-      // var recordSocket = io.connect('//54.214.168.107:8081/record');
-      var recordSocket = io('http://localhost:8081/record');
+      socket.on('connect', function(){
+        var delivery = new Delivery(socket);
+        delivery.listen(socket);
+        delivery.on('delivery.connect',function(delivery){
+          $("input[type=submit]").click(function(evt){
+            var file = $("input[type=file]")[0].files[0];
+            var extraParams = {foo: 'bar'};
+            delivery.send(file, extraParams);
+            evt.preventDefault();
+          });
+        });
 
-      $("#button").on("click", function(e){
-        // recordSocket.open();
-        // recordSocket.emit('ping', 'hello human');
-        recordSocket.emit('startRecording', 'file.mov');
+        delivery.on('send.success',function(fileUID){
+          console.log("file was successfully sent.");
+        });
       });
-
-      recordSocket.on('hi', function(msg){
-        var numPeople = i + 1;
-        var html = '<li>' + numPeople + ' con`nections</li>';
-        $('#message-board').append(html);
-        i++;
-      })
-      ///
-    };
+    });
     </script>
   </body>
 </html>
