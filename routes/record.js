@@ -36,7 +36,7 @@ router.put('/', function(req, res){
 		//
 
 		// var objParams = {
-		
+
 		// 	latitude: incomingLatitude,
 		// 	longitude: incomingLongitude
 		// }
@@ -55,15 +55,9 @@ router.put('/', function(req, res){
 		// once video is received, final video and meta data sent to all clients
 
 		//
-		res.end();
+		// res.end();
 
-})
-
-router.ws('/hp', function(ws, req) {
-    console.log('connect ws');
-    next();
 });
-
 
 function beginRecordingSession(projectPath, req, res){
 	var projectUsers = [];

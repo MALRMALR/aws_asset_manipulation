@@ -29,7 +29,7 @@ AWS.config.apiVersion = {
 AWS.config.update({region: 'us-west-2'})
 // instantiate express and require mysql
 var app = express();
-var mysql = require('mysql');
+// var mysql = require('mysql');
 // var pool = mysql;
 //
 // var connection = mysql.createConnection({
@@ -54,12 +54,15 @@ var io = require('socket.io')(server);
 
 io.on('connection', function(socket){
 	// chatroom stuff
-	socket.broadcast.emit('hi');
 	console.log('a user connected');
 
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
+
+	socket.on('ping', function(msg){
+		io.emit('ping', msg);
+	})
 
 	// record /put route.
 	socket.on('startRecording', function(msg){

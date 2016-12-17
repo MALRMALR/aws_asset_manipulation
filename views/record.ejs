@@ -6,7 +6,7 @@
   </head>
   <body>
     <div id="message-board">
-
+      <button id="button" type="button" name="button">click me</button>
     </div>
     <script src="//d3h2rzcfh3oxa4.cloudfront.net/socket.io-client/dist/socket.io.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.js"></script>
@@ -16,23 +16,17 @@
 
       // PROD - DO NOT CHANGE
       // var recordSocket = io.connect('//54.214.168.107:8081/record');
-      var recordSOcket = io();
+      var recordSocket = io('http://localhost:8081/record');
 
       $("#button").on("click", function(e){
-        recordSocket.open();
-        recordSocket.emit('ping', 'hello human');
+        // recordSocket.open();
+        // recordSocket.emit('ping', 'hello human');
+        recordSocket.emit('startRecording', 'file.mov');
       });
-      // DEV // LOCAL - DO NOT CHANGE
-      // var recordSocket = io();
-      recordSocket.emit('startRecording', 'file.mov');
-      console.log('begin recording...');
-      // use io client engine for upload!!!!
-      recordSocket.on('connection', function(msg){
-        recordSocket.emit('hi', msg);
-      });
+
       recordSocket.on('hi', function(msg){
         var numPeople = i + 1;
-        var html = '<li>There are  #' + numPeople + ' connected</li>';
+        var html = '<li>' + numPeople + ' con`nections</li>';
         $('#message-board').append(html);
         i++;
       })
