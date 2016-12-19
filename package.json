@@ -29,6 +29,7 @@
     "passport-strategy": "^1.0.0",
     "q": "^1.4.1",
     "querystring": "^0.2.0",
+    "request": "^2.79.0",
     "serve-favicon": "~2.3.0",
     "socket-io": "0.0.0",
     "socket.io": "https://registry.npmjs.org/socket.io/-/socket.io-1.7.1.tgz",
