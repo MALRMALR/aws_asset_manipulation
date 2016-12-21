@@ -22,18 +22,26 @@
         var delivery = new Delivery(socket);
         delivery.listen(socket);
         delivery.on('delivery.connect',function(delivery){
-          $("input[type=submit]").click(function(evt){
+
+          $('input[type=submit]').on('click', function(event){
             var file = $("input[type=file]")[0].files[0];
-            var extraParams = {foo: 'bar'};
-            delivery.send(file, extraParams);
-            evt.preventDefault();
+            delivery.send({
+              name: file.name,
+              path : file
+            });
+            console.log(event);
+            event.preventDefault();
           });
+
         });
 
         delivery.on('send.success',function(fileUID){
           console.log("file was successfully sent.");
         });
+
+
       });
+
     });
     </script>
   </body>
