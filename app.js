@@ -8,6 +8,7 @@ var querystring = require('querystring');
 var passport = require('passport');
 var passportFacebook = require('passport-facebook');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var helmet = require('helmet');
 require('dotenv').config();
 
 // routes -- socket - IO // login/
@@ -115,6 +116,7 @@ app.use(function(req, res, next){
   next();
 })
 app.use(logger('dev'));
+app.use(helmet());
 app.use(bodyParser.json()); // supports json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));  // supports url encoded bodies
 // app.use(cookieParser());
