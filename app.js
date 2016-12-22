@@ -61,7 +61,7 @@ io.on('connection', function(socket){
 	// console.log(delivery);
   delivery.on('receive.success',function(file){
     var params = file.params;
-    fs.writeFile(file.name,file.buffer, function(err){
+    fs.writeFile(file.name, file.buffer, function(err){
       if(err){
         console.log('File could not be saved.');
       }else{
@@ -84,8 +84,8 @@ io.on('connection', function(socket){
 	// record /put route.
 	socket.on('startRecording', function(msg){
 		io.emit('startRecording', msg);
-
 	});
+
 	socket.on('disconnect', function(){
 		console.log('user disconnected');
 	});
