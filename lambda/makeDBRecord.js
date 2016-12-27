@@ -79,6 +79,9 @@ s3.createBucket({Bucket: 'gn-inbound'}, function() {
       // loop through array and pass any movie files into movieHolder array
       bucketContents.forEach(function(item){
 
+        // what type of video files?
+
+        
         var file = (/\.(mov)$/i).test(item.Key)
         // REGEX matching any files with .mov file extension
         if (file === true) {
