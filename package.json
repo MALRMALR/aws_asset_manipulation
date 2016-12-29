@@ -28,7 +28,7 @@
     "passport-facebook-token": "^3.3.0",
     "passport-local": "^1.0.0",
     "passport-strategy": "^1.0.0",
-    "q": "^1.4.1",
+    "q": "https://registry.npmjs.org/q/-/q-1.4.1.tgz",
     "querystring": "^0.2.0",
     "request": "^2.79.0",
     "serve-favicon": "~2.3.0",

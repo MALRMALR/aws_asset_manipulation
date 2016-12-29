@@ -1,5 +1,7 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
+var Q = require('q');
+var fs = require('fs');
 
 
 // aws api config
@@ -21,10 +23,11 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 var table = "demoProjectsV3";
 
 
-  s3.createBucket({Bucket: 'gn-inbound'}, function() {
+s3.createBucket({Bucket: 'gn-inbound'}, function() {
     // console.log("HI");
   	var s3CallParams = {
-    	Bucket: 'gn-inbound'
+    	Bucket: 'gn-inbound',
+      Prefix: 'public/development/projects'
   	};
 
     var bucketContents = [];
@@ -38,24 +41,23 @@ var table = "demoProjectsV3";
       } else {
 
         // pass contents of bucket into movieHolder array
-        // bucketContents = data.Contents;
+        bucketContents = data.Contents;
         // console.log(bucketContents);
-        console.log(data);
+        // console.log(data);
 
         // loop through array and pass any movie files into movieHolder array
-
         bucketContents.forEach(function(item){
-          // var file = (/\mp4/g).test(item.Key);
+          var file = (/\.mp4/ig).test(item.Key);
           // console.log(item);
           //REGEX matching any files with .mov file extension
-          // if (file == true) {
-          //   movieHolder.push(item.Key);
-          //   console.log(item.Key);
-          // }
-        });
-        // console.log(movieHolder);
+          if (file === true) {
+            movieHolder.push(item.Key);
+          //   console.log(item);
+          }
 
-      // write movieHolder array to console
+        });
+        console.log(movieHolder)
+
 
     }; // end s3 listObjects call
   });  // end s3 createBucket
