@@ -1,6 +1,7 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 
+
 // aws api config
 AWS.config.apiVersions = {
   dynamodb: '2012-08-10'
@@ -19,20 +20,43 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 var table = "demoProjectsV3";
 
-exports.handler = function(event, context) {
-  console.log('received event');
-  // console.log(event);
-  var s3Params = {
-    Bucket: 'gn-inbound',
-    Key: '/public/development/projects'
-  };
-  s3.getObject(s3Params, function(err, data){
+
+  s3.createBucket({Bucket: 'gn-inbound'}, function() {
+    // console.log("HI");
+  	var s3CallParams = {
+    	Bucket: 'gn-inbound'
+  	};
+
+    var bucketContents = [];
+    var movieHolder = [];
+
+    // listObjectsV2 method - the revised List Objects API and we recommend you use this revised API for new application development.
+    s3.listObjectsV2(s3CallParams, function(err, data) {
+
       if (err) {
         console.log(err, err.stack);
       } else {
+
+        // pass contents of bucket into movieHolder array
+        // bucketContents = data.Contents;
+        // console.log(bucketContents);
         console.log(data);
-      }
-    });
 
+        // loop through array and pass any movie files into movieHolder array
 
-}
+        bucketContents.forEach(function(item){
+          // var file = (/\mp4/g).test(item.Key);
+          // console.log(item);
+          //REGEX matching any files with .mov file extension
+          // if (file == true) {
+          //   movieHolder.push(item.Key);
+          //   console.log(item.Key);
+          // }
+        });
+        // console.log(movieHolder);
+
+      // write movieHolder array to console
+
+    }; // end s3 listObjects call
+  });  // end s3 createBucket
+});
