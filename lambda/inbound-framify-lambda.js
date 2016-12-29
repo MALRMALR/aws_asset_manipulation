@@ -56,7 +56,19 @@ s3.createBucket({Bucket: 'gn-inbound'}, function() {
           }
 
         });
-        console.log(movieHolder)
+        console.log(movieHolder);
+
+        // now from each folder, make a dynamodb record
+        // ddb createFolderOnS3
+
+        
+        /*
+        1.  use exec and ffmpeg module to framify images - on s3
+        2.  send file urls to server
+        3.  create "complete" event listener and dispatch "complete" event
+        4.  listen for complete event
+        5.
+        */
 
 
     }; // end s3 listObjects call
