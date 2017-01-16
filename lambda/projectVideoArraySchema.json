@@ -1,0 +1,96 @@
+{
+	"type": "object",
+	"properties": {
+		"id": {
+			"type": "integer",
+			"format": "int64"
+		},
+		"name": {
+			"type": "string"
+		},
+		"upload_uri": {
+			"type": "string",
+			"description": "URI where video file is stored"
+		},
+		"state": {
+			"type": "string",
+			"description": "video status. (uploading | transcoding | processing | complete)"
+		},
+		"complete": {
+			"type": "boolean",
+			"description": "probably redundant, indicates if video is fully analyzed and ready to go"
+		},
+		"metadata_url": {
+			"type": "string",
+			"description": "URI where metadata file for the video is stored"
+		}
+	}
+}
+
+{
+  "id": 5471,
+  "name": "#6bae48",
+  "videos":
+   [ { "id": "b80c8d02-b6cd-11e6-b52f-c359cad0d232",
+       "complete": "false",
+       "description": "desc",
+       "upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-27_16-36-46-763.mov",
+       "state": "uploading",
+       "metadata_url": "meta-data-url-will-go-here" },
+     { "id": "b80c8d01-b6cd-11e6-b52f-c359cad0d232",
+       "complete": "false",
+       "description": "desc",
+       "upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-27_16-36-04-491.mov",
+       "state": "uploading",
+       "metadata_url": "meta-data-url-will-go-here" },
+     { "id": "b80c8d00-b6cd-11e6-b52f-c359cad0d232",
+       "complete": "false",
+       "description": "desc",
+       "upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-27_16-35-22-922.mov",
+       "state": "uploading",
+       "metadata_url": "meta-data-url-will-go-here" },
+     { "id": "b80c65f0-b6cd-11e6-b52f-c359cad0d232",
+       "complete": "false",
+       "description": "desc",
+       "upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-25_17-46-56-123.mov",
+       "state": "uploading",
+       "metadata_url": "meta-data-url-will-go-here" } ],
+			"tags": [],
+  "status": "pending"
+}
+
+{
+	"id": 5471,
+	"name": "#6bae48",
+	"videos": [{
+		"id": "",
+		"complete": "true",
+		"description": "desc",
+		"upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-27_16-36-46-763.mov",
+		"state": "uploading",
+		"metadata_url": "meta-data-url-will-go-here"
+	}, {
+		"id": "",
+		"complete": "true",
+		"description": "desc",
+		"upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-27_16-36-04-491.mov",
+		"state": "uploading",
+		"metadata_url": "meta-data-url-will-go-here"
+	}, {
+		"id": "",
+		"complete": "true",
+		"description": "desc",
+		"upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-27_16-35-22-922.mov",
+		"state": "uploading",
+		"metadata_url": "meta-data-url-will-go-here"
+	}, {
+		"id": "",
+		"complete": "true",
+		"description": "desc",
+		"upload_uri": "http://gn-inbound.s3.amazonaws.com/2016-10-25_17-46-56-123.mov",
+		"state": "uploading",
+		"metadata_url": "meta-data-url-will-go-here"
+	}],
+	"tags": [],
+	"status": "pending"
+}

@@ -201,12 +201,6 @@ router.get('/account',
     res.render('profile', { user: req.user });
   });
 
-// utility
-function isAuthenticated(){
-	// scan dynamo db
-	// if token client sends matches one in db - good to go
-
-}
 function randomString(length) {
     var chars = '123456789'.split('');
 

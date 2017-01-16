@@ -60,13 +60,12 @@ s3.createBucket({Bucket: 'gn-inbound'}, function() {
 
         // now from each folder, make a dynamodb record
         // ddb createFolderOnS3 - add restful api / CRUD operations
-        
+
         /*
-        1.  use exec and ffmpeg module to framify images - on s3
-        2.  send file urls to server
+        1.  use child process to call and execute ffmpeg to 'framify' images - send to s3
+        2.  send file urls to IMU and C++ server
         3.  create "complete" event listener and dispatch "complete" event
         4.  listen for complete event
-        5.
         */
 
 
